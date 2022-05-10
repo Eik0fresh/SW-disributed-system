@@ -1,5 +1,15 @@
 version: '3'
 services:
+  prototyp-backend-services:
+    build: ./backend/
+    container_name: prototyp-backend-services
+    ports:
+      - "8080:8080"
+    networks:
+      - prototyp-backend-network
+    depends_on:
+      - postgres-prototyp-patients-db
+
   postgres-prototyp-patients-db:
     image: postgres:12.3-alpine
     container_name: prototyp-patients-db
@@ -8,7 +18,7 @@ services:
       - POSTGRES_DB=patients
     ports:
       # don't expose ports in production
-      - "8080:5432"
+      - "8050:5432"
     networks:
       - prototyp-backend-network
     volumes:

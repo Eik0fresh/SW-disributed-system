@@ -21,7 +21,7 @@ CREATE TABLE patients.patient (
 );
 
 ALTER TABLE patients.patient ALTER COLUMN p_id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME patient.patient_p_id
+    SEQUENCE NAME patients.patient_p_id
     START WITH 0
     INCREMENT BY 1
     MINVALUE 0
