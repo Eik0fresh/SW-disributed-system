@@ -1,0 +1,19 @@
+version: '3'
+services:
+  postgres-prototyp-patients-db:
+    image: postgres:12.3-alpine
+    container_name: prototyp-patients-db
+    environment:
+      - POSTGRES_PASSWORD=prototyp1234
+      - POSTGRES_DB=patients
+    ports:
+      # don't expose ports in production
+      - "8080:5432"
+    networks:
+      - prototyp-backend-network
+    volumes:
+      - ./database/PrototypPatient.sql:/docker-entrypoint-initdb.d/init.sql
+
+networks:
+  prototyp-backend-network:
+    driver: bridge
