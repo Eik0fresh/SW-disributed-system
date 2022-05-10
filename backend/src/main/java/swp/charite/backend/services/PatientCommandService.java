@@ -5,11 +5,12 @@ import org.springframework.stereotype.Service;
 import swp.charite.backend.dto.PatientDto;
 import swp.charite.backend.model.Patient;
 import swp.charite.backend.repository.PatientRepository;
+import swp.charite.backend.services.interfaces.IPatientCommandService;
 
 import java.util.Optional;
 
 @Service
-public class PatientCommandService implements IPatientCommandService{
+public class PatientCommandService implements IPatientCommandService {
 
     @Autowired
     PatientRepository patientRepository;

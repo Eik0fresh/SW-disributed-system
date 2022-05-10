@@ -8,14 +8,14 @@ services:
     networks:
       - prototyp-backend-network
     depends_on:
-      - postgres-prototyp-patients-db
+      - postgres-prototyp-db
 
-  postgres-prototyp-patients-db:
+  postgres-prototyp-db:
     image: postgres:12.3-alpine
-    container_name: prototyp-patients-db
+    container_name: prototyp-db
     environment:
       - POSTGRES_PASSWORD=prototyp1234
-      - POSTGRES_DB=patients
+      - POSTGRES_DB=prototyp_db
     ports:
       # don't expose ports in production
       - "8050:5432"

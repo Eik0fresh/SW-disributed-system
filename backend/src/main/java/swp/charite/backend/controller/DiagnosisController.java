@@ -5,22 +5,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import swp.charite.backend.dto.DoctorDto;
-import swp.charite.backend.dto.PatientDto;
-import swp.charite.backend.services.interfaces.IDoctorCommandService;
-import swp.charite.backend.services.interfaces.IPatientCommandService;
+import swp.charite.backend.dto.DiagnosisDto;
+import swp.charite.backend.services.interfaces.IDiagnosisCommandService;
 
 import java.util.Optional;
 
-/**
- * REST-Controller for the doctor client
- */
 @Controller
-@RequestMapping("doctor")
-public class DoctorController {
+@RequestMapping("/diagnosis")
+public class DiagnosisController {
 
     @Autowired
-    IDoctorCommandService doctorCommandService;
+    IDiagnosisCommandService diagnosisCommandService;
 
     @GetMapping(value = "/getSimpleString")
     @ResponseBody
@@ -28,11 +23,11 @@ public class DoctorController {
         return new ResponseEntity<>("This is the API of the patient client", HttpStatus.OK);
     }
 
-    @PostMapping(value = "/createDoctor")
+    @PostMapping(value = "/createDiagnosis")
     @ResponseBody
-    private ResponseEntity<Long> createDoctor(@RequestBody DoctorDto doctorDto) {
-        Optional<Long> doctorId =  doctorCommandService.handleCreate(doctorDto);
-        return doctorId.map(aLong -> new ResponseEntity<>(aLong, HttpStatus.CREATED))
+    private ResponseEntity<Long> createDoctor(@RequestBody DiagnosisDto diagnosisDto) {
+        Optional<Long> diagnosisId =  diagnosisCommandService.handleCreate(diagnosisDto);
+        return diagnosisId.map(aLong -> new ResponseEntity<>(aLong, HttpStatus.CREATED))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 }

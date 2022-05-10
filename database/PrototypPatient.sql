@@ -9,22 +9,59 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
-CREATE SCHEMA patients;
+CREATE SCHEMA prototyp_db;
 
 SET default_table_access_method = heap;
 
-CREATE TABLE patients.patient (
+CREATE TABLE prototyp_db.patient (
     p_id      integer NOT NULL PRIMARY KEY,
     firstname text    NOT NULL,
     surname   text    NOT NULL,
     UNIQUE (firstname, surname)
 );
 
-ALTER TABLE patients.patient ALTER COLUMN p_id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME patients.patient_p_id
+ALTER TABLE prototyp_db.patient ALTER COLUMN p_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME prototyp_db.patient_p_id
     START WITH 0
     INCREMENT BY 1
     MINVALUE 0
     NO MAXVALUE
     CACHE 1
 );
+
+CREATE TABLE prototyp_db.doctor (
+    d_id      integer NOT NULL PRIMARY KEY,
+    firstname text    NOT NULL,
+    surname   text    NOT NULL,
+    UNIQUE (firstname, surname)
+);
+
+ALTER TABLE prototyp_db.doctor ALTER COLUMN d_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME prototyp_db.doctor_p_id
+    START WITH 0
+    INCREMENT BY 1
+    MINVALUE 0
+    NO MAXVALUE
+    CACHE 1
+);
+
+CREATE TABLE prototyp_db.diagnosis (
+    dia_id      integer NOT NULL PRIMARY KEY,
+    p_id        integer NOT NULL,
+    d_id        integer NOT NULL,
+    diagnosis   text    NOT NULL
+);
+
+ALTER TABLE prototyp_db.diagnosis ALTER COLUMN dia_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME prototyp_db.diagnosis_dia_id
+    START WITH 0
+    INCREMENT BY 1
+    MINVALUE 0
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY prototyp_db.diagnosis
+    ADD CONSTRAINT diagnosis_p_id_fkey FOREIGN KEY (p_id) REFERENCES prototyp_db.patient(p_id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE ONLY prototyp_db.diagnosis
+    ADD CONSTRAINT diagnosis_d_id_fkey FOREIGN KEY (d_id) REFERENCES prototyp_db.doctor(d_id) ON DELETE CASCADE ON UPDATE CASCADE;

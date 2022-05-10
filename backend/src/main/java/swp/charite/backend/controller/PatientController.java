@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import swp.charite.backend.dto.PatientDto;
-import swp.charite.backend.services.IPatientCommandService;
+import swp.charite.backend.services.interfaces.IPatientCommandService;
 
 import java.util.Optional;
 
