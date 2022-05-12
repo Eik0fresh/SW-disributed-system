@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import swp.charite.backend.dto.FeedbackDto;
 import swp.charite.backend.dto.PatientDto;
 import swp.charite.backend.services.interfaces.IPatientCommandService;
 
@@ -31,6 +32,14 @@ public class PatientController {
     private ResponseEntity<Long> createPatient(@RequestBody PatientDto patientDto) {
         Optional<Long> patientId =  patientCommandService.handleCreate(patientDto);
         return patientId.map(aLong -> new ResponseEntity<>(aLong, HttpStatus.CREATED))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+    }
+
+    @PostMapping(value = "/createFeedback")
+    @ResponseBody
+    private ResponseEntity<Long> createFeedback(@RequestBody FeedbackDto feedbackDto) {
+        Optional<Long> feedbackId = patientCommandService.createFeedback(feedbackDto);
+        return feedbackId.map(aLong -> new ResponseEntity<>(aLong, HttpStatus.CREATED))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 }

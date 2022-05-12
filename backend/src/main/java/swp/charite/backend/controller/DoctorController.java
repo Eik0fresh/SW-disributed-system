@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import swp.charite.backend.dto.DoctorDto;
+import swp.charite.backend.dto.FeedbackDto;
+import swp.charite.backend.dto.GetFeedbackDto;
 import swp.charite.backend.dto.PatientDto;
 import swp.charite.backend.services.interfaces.IDoctorCommandService;
 import swp.charite.backend.services.interfaces.IPatientCommandService;
@@ -34,5 +36,15 @@ public class DoctorController {
         Optional<Long> doctorId =  doctorCommandService.handleCreate(doctorDto);
         return doctorId.map(aLong -> new ResponseEntity<>(aLong, HttpStatus.CREATED))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+    }
+
+    @PostMapping(value = "/getFeedback")
+    @ResponseBody
+    private ResponseEntity<FeedbackDto> getFeedback(@RequestBody GetFeedbackDto getFeedbackDto) {
+        FeedbackDto feedbackDto = doctorCommandService.getFeedbackOfPatient(getFeedbackDto);
+        if (feedbackDto != null) {
+            return new ResponseEntity<>(feedbackDto, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

@@ -29,6 +29,23 @@ ALTER TABLE prototyp_db.patient ALTER COLUMN p_id ADD GENERATED ALWAYS AS IDENTI
     CACHE 1
 );
 
+CREATE TABLE prototyp_db.feedback (
+    f_id      integer NOT NULL PRIMARY KEY,
+    p_id      integer NOT NULL,
+    dia_id    integer NOT NULL,
+    feedback  text    NOT NULL,
+    UNIQUE (dia_id, p_id)
+);
+
+ALTER TABLE prototyp_db.feedback ALTER COLUMN f_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME prototyp_db.feedback_f_id
+    START WITH 0
+    INCREMENT BY 1
+    MINVALUE 0
+    NO MAXVALUE
+    CACHE 1
+);
+
 CREATE TABLE prototyp_db.doctor (
     d_id      integer NOT NULL PRIMARY KEY,
     firstname text    NOT NULL,
