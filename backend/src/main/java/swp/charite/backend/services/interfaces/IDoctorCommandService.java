@@ -8,5 +8,5 @@ public interface IDoctorCommandService {
 
     Optional<Long> handleCreate(DoctorDto doctorDto);
 
-    FeedbackDto getFeedbackOfPatient(GetFeedbackDto getFeedbackDto);
+    FeedbackDto getFeedbackOfPatient(Long doctor_id);
 }

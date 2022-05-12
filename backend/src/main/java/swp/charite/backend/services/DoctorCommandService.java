@@ -34,11 +34,8 @@ public class DoctorCommandService implements IDoctorCommandService {
     }
 
     @Override
-    public FeedbackDto getFeedbackOfPatient(GetFeedbackDto getFeedbackDto) {
-        if (getFeedbackDto.getPatient_id() == null || getFeedbackDto.getDiagnosis_id() == null) {
-            return null;
-        }
-        Optional<Feedback> op_feedback = feedbackRepository.getFeedbackByPatientIdAndDiagnosisId(getFeedbackDto.getPatient_id(), getFeedbackDto.getDiagnosis_id());
+    public FeedbackDto getFeedbackOfPatient(Long doctor_id) {
+        Optional<Feedback> op_feedback = feedbackRepository.getFeedbackByDoctorId(doctor_id);
         FeedbackDto feedbackDto = null;
         if (op_feedback.isPresent()) {
             feedbackDto = new FeedbackDto(op_feedback.get().getPatient().getP_id(), op_feedback.get().getDiagnosis().getDia_id(), op_feedback.get().getFeedback());

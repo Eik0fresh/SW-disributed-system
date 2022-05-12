@@ -38,10 +38,10 @@ public class DoctorController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
-    @PostMapping(value = "/getFeedback")
+    @GetMapping(value = "/getFeedback")
     @ResponseBody
-    private ResponseEntity<FeedbackDto> getFeedback(@RequestBody GetFeedbackDto getFeedbackDto) {
-        FeedbackDto feedbackDto = doctorCommandService.getFeedbackOfPatient(getFeedbackDto);
+    private ResponseEntity<FeedbackDto> getFeedback(@RequestParam Long doctor_id) {
+        FeedbackDto feedbackDto = doctorCommandService.getFeedbackOfPatient(doctor_id);
         if (feedbackDto != null) {
             return new ResponseEntity<>(feedbackDto, HttpStatus.OK);
         }
