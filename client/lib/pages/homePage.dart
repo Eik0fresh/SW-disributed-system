@@ -1,5 +1,5 @@
-import 'package:client/pages/doctor/doctorHomePage.dart';
-import 'package:client/pages/patient/patientHomePage.dart';
+import 'package:client/pages/doctor/homepage.dart';
+import 'package:client/pages/patient/homepage.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {

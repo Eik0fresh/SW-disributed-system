@@ -1,31 +1,31 @@
-import 'package:client/pages/patient/patientHelp.dart';
-import 'package:client/pages/patient/patientLogin.dart';
-import 'package:client/pages/patient/patientSignup.dart';
+import 'package:client/pages/doctor/diagnosis.dart';
+import 'package:client/pages/doctor/feedback.dart';
+import 'package:client/pages/doctor/login.dart';
 import 'package:flutter/material.dart';
 
-class PatientHomePage extends StatefulWidget {
+class DoctorHomePage extends StatefulWidget {
   @override
-  _PatientHomePageState createState() => _PatientHomePageState();
+  _DoctorHomePageState createState() => _DoctorHomePageState();
 }
 
-class _PatientHomePageState extends State<PatientHomePage> {
+class _DoctorHomePageState extends State<DoctorHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Patient"), centerTitle: true),
+      appBar: AppBar(title: Text("Doctor"), centerTitle: true),
       body: Center(
           child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          button("Login", PatientLogin()),
+          button("Login", DoctorLogin()),
           SizedBox(
             height: 20,
           ),
-          button("Signup", PatientSignup()),
+          button("Diagnosis", CreateDiagnosis()),
           SizedBox(
             height: 20,
           ),
-          button("Q&A", PatientHelp()),
+          button("Feedback", GetFeedback())
         ],
       )),
     );
