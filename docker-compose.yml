@@ -1,0 +1,29 @@
+version: '3'
+services:
+  prototyp-backend-services:
+    build: ./backend/
+    container_name: prototyp-backend-services
+    ports:
+      - "8080:8080"
+    networks:
+      - prototyp-backend-network
+    depends_on:
+      - postgres-prototyp-db
+
+  postgres-prototyp-db:
+    image: postgres:12.3-alpine
+    container_name: prototyp-db
+    environment:
+      - POSTGRES_PASSWORD=prototyp1234
+      - POSTGRES_DB=prototyp_db
+    ports:
+      # don't expose ports in production
+      - "8050:5432"
+    networks:
+      - prototyp-backend-network
+    volumes:
+      - ./database/PrototypPatient.sql:/docker-entrypoint-initdb.d/init.sql
+
+networks:
+  prototyp-backend-network:
+    driver: bridge
