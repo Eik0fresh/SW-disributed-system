@@ -16,13 +16,13 @@ class _DoctorLoginState extends State<DoctorLogin> {
   Doctor patient = Doctor("", "");
 
   Future login() async {
-    var url = Uri.parse("localhost:8080/doctor/createDoctor");
+    var url = Uri.parse("http://localhost:8080/doctor/createDoctor");
     var req_body = json
-        .encode({'username': patient.firstname, 'password': patient.lastname});
+        .encode({'firstname': patient.firstname, 'surname': patient.lastname});
     var res = await http.post(url,
-        headers: {'Content-Type': 'application/json'}, body: req_body);
+        headers: {'Content-Type': 'application/json; charset=UTF-8'}, body: req_body);
 
-    if (res.body == req_body) {
+    if (res.statusCode == 201) {
       Navigator.push(
           context,
           MaterialPageRoute(

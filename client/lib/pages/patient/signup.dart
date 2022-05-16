@@ -15,13 +15,13 @@ class _PatientSignupState extends State<PatientSignup> {
   Patient patient = Patient("", "");
 
   Future signup() async {
-    var url = Uri.parse("localhost:8080/patient/createPatient");
+    var url = Uri.parse("http://localhost:8080/patient/createPatient");
     var req_body = json
-        .encode({'username': patient.firstname, 'password': patient.lastname});
+        .encode({'firstname': patient.firstname, 'surname': patient.lastname});
     var res = await http.post(url,
         headers: {'Content-Type': 'application/json'}, body: req_body);
 
-    if (res.body == req_body) {
+    if (res.statusCode == 201) {
       showDialog(
         context: context,
         builder: (context) {
@@ -54,12 +54,14 @@ class _PatientSignupState extends State<PatientSignup> {
           children: <Widget>[
             TextField(
               decoration: InputDecoration(hintText: "First Name"),
+              controller: _firstname,
             ),
             SizedBox(
               height: 20,
             ),
             TextField(
               decoration: InputDecoration(hintText: "Last Name"),
+              controller: _lastname,
             ),
             SizedBox(
               height: 40,

@@ -10,22 +10,23 @@ class CreateDiagnosis extends StatefulWidget {
 }
 
 class _CreateDiagnosisState extends State<CreateDiagnosis> {
-  TextEditingController _feedback = TextEditingController();
-  Doctor patient = Doctor("", "");
+  TextEditingController _pId = TextEditingController();
+  TextEditingController _dId = TextEditingController();
+  TextEditingController _diagnosis = TextEditingController();
 
   Future send() async {
-    var url = Uri.parse("localhost:8080/diagnosis/createDiagnosis");
+    var url = Uri.parse("http://localhost:8080/diagnosis/createDiagnosis");
     var req_body = json
-        .encode({'username': patient.firstname, 'password': patient.lastname});
+        .encode({'patient_id': _pId.text, 'doctor_id': _dId.text, 'diagnosis': _diagnosis.text});
     var res = await http.post(url,
         headers: {'Content-Type': 'application/json'}, body: req_body);
 
-    if (res.body == req_body) {
+    if (res.statusCode == 201) {
       showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            content: Text("Sign up successfully"),
+            content: Text("Diagnosis created!"),
           );
         },
       );
@@ -53,25 +54,30 @@ class _CreateDiagnosisState extends State<CreateDiagnosis> {
           children: <Widget>[
             TextField(
               decoration: InputDecoration(hintText: "patient_id"),
+              controller: _pId,
             ),
             SizedBox(
               height: 20,
             ),
             TextField(
               decoration: InputDecoration(hintText: "doctor_id"),
+              controller: _dId,
             ),
             SizedBox(
               height: 20,
             ),
             TextField(
               decoration: InputDecoration(hintText: "diagnosis"),
+              controller: _diagnosis,
             ),
             SizedBox(
               height: 40,
             ),
             ElevatedButton(
               child: Text("Submit"),
-              onPressed: () {},
+              onPressed: () {
+                send();
+              },
             ),
           ],
         ),
