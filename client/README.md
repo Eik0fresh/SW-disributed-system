@@ -1,23 +1,6 @@
-# client
+# Prototype for client
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
-## Prototype for client
-
-Client Workflow
+Client Structure
 
 ```mermaid
 graph LR;
@@ -33,4 +16,30 @@ graph LR;
     DoctorLogin-->DoctorHomepage;
     DoctorHomepage-->CreateDiagnosis;
     DoctorHomepage-->GetFeedback;
+```
+
+# Client Workflow
+Workflow design for clients, page to page, can be modified as user manual in the end.
+
+## Patient
+
+```mermaid
+  graph LR;
+      PatientHomepage-->Help;;
+      PatientHomepage-->Login;
+      Login-->LoginWithQRcode;
+      Login-->LoginWithEmail;
+      LoginWithQRcode-->GetDiagnosis;
+      LoginWithEmail-->GetDiagnosis;
+      GetDiagnosis-->SendFeedback;
+```
+
+## Doctor
+
+```mermaid
+  graph LR;
+      Login-->CreatePatient;
+      Login-->CreateDiagnosis;
+      Login-->GetFeedback;
+      CreateDiagnosis-->GenerateQRcode;
 ```
