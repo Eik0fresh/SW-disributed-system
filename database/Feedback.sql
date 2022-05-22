@@ -13,11 +13,13 @@ CREATE SCHEMA feedback_db
 
 SET default_table_access_method = heap;
 
+CREATE TYPE choice AS ENUM ('multipleChoice', 'checkbox');
+
 CREATE TABLE feedback_db.question (
     q_id     integer NOT NULL PRIMARY KEY,
-    a_id     integer NOT NULL,  -- also needed?
+    a_id     integer NOT NULL, 
     question text    NOT NULL,  
-    format   text    NOT NULL  -- data type need to be double checked 
+    format   choice  NOT NULL  -- data type need to be double checked 
 );
 
 ALTER TABLE feedback_db.question ALTER COLUMN q_id ADD GENERATED ALWAYS AS IDENTITY (
@@ -31,12 +33,12 @@ ALTER TABLE feedback_db.question ALTER COLUMN q_id ADD GENERATED ALWAYS AS IDENT
 
 ALTER TABLE ONLY feedback_db.question
     ADD CONSTRAINT question_a_id_fkey FOREIGN KEY (a_id) REFERENCES feedback_db.answer(a_id) ON DELETE CASCADE ON UPDATE CASCADE;
--- 1 question has many answers?
+
 
 CREATE TABLE feedback_db.answer (
     a_id    integer NOT NULL PRIMARY KEY,
     q_id    integer NOT NULL,
-    answer  text    NOT NULL,  -- data type should be double checked
+    answer  text    NOT NULL, 
     day     date    NOT NULL  
 );
 
@@ -53,10 +55,12 @@ ALTER TABLE ONLY feedback_db.answer
     ADD CONSTRAINT answer_q_id_fkey FOREIGN KEY (q_id) REFERENCES feedback_db.question(q_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
+CREATE TYPE level AS ENUM ('very urgent', 'urgent', 'normal');
+
 CREATE TABLE feedback_db.guidance (
     g_id      integer  NOT NULL PRIMARY KEY,
     guidance  text     NOT NULL,
-    priority  smallint NOT NULL,   -- data type should be double checked
+    priority  level    NOT NULL,   -- data type should be double checked
     day       date     NOT NULL,
     done      boolean  NOT NULL
 );

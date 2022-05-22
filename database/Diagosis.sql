@@ -45,11 +45,13 @@ CREATE TABLE diagnosis_db.doctor (
 --     CACHE 1
 -- );
 
+CREATE TYPE level AS ENUM ('very urgent', 'urgent', 'normal');
+
 CREATE TABLE diagnosis_db.guidance (
     g_id      integer  NOT NULL PRIMARY KEY,
     dia_id    integer  NOT NULL,
     guidance  text     NOT NULL,
-    priority  smallint NOT NULL,   -- data type should be double checked
+    priority  level    NOT NULL,   -- data type should be double checked
     day       date     NOT NULL,
     done      boolean  NOT NULL
 );
