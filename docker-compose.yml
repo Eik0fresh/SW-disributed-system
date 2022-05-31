@@ -1,17 +1,32 @@
 version: '3'
 services:
-  application-backend-services:
-    build: ./backend/
-    container_name: application-backend
+  eureka:
+    build: ./service-discovery/
+    container_name: eureka
     ports:
-      - "8080:8080"
+      - "8761:8761"
     networks:
       - application-backend-network
-    depends_on:
-      - postgres-patient-db
-      - postgres-doctor-db
-      - postgres-diagnosis-db
-      - postgres-feedback-db
+
+  demo-service:
+    build: ./demo/
+    container_name: demo-service
+    ports:
+      - "8081:8081"
+    env_file:
+      - ./demo/.env
+    networks:
+      - application-backend-network
+
+  ed-gateway:
+    build: ./gateway/
+    container_name: ed-gateway
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./gateway/.env
+    networks:
+      - application-backend-network
 
   postgres-patient-db:
     image: postgres:12.3-alpine
@@ -25,7 +40,7 @@ services:
     networks:
       - application-backend-network
     volumes:
-      - ./database/Patient.sql:/docker-entrypoint-initdb.d/patient.sql  # file name in docker container should also be changed right?
+      - ./database/Patient.sql:/docker-entrypoint-initdb.d/init.sql  # file name in docker container should also be changed right?
 
   postgres-doctor-db:
     image: postgres:12.3-alpine
@@ -39,7 +54,7 @@ services:
     networks:
       - application-backend-network
     volumes:
-      - ./database/Doctor.sql:/docker-entrypoint-initdb.d/doctor.sql # file name in docker container should also be changed right?
+      - ./database/Doctor.sql:/docker-entrypoint-initdb.d/init.sql # file name in docker container should also be changed right?
 
   postgres-diagnosis-db:
     image: postgres:12.3-alpine
@@ -53,7 +68,7 @@ services:
     networks:
       - application-backend-network
     volumes:
-      - ./database/Diagnosis.sql:/docker-entrypoint-initdb.d/diagnosis.sql # file name in docker container should also be changed right?
+      - ./database/Diagnosis.sql:/docker-entrypoint-initdb.d/init.sql # file name in docker container should also be changed right?
 
   postgres-feedback-db:
       image: postgres:12.3-alpine
@@ -67,7 +82,7 @@ services:
       networks:
         - application-backend-network
       volumes:
-        - ./database/Feedback.sql:/docker-entrypoint-initdb.d/feedback.sql # file name in docker container should also be changed right?
+        - ./database/Feedback.sql:/docker-entrypoint-initdb.d/init.sql # file name in docker container should also be changed right?
 
 networks:
   application-backend-network:
