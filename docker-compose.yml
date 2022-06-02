@@ -1,18 +1,5 @@
 version: '3'
 services:
-  application-backend-services:
-    build: ./backend/
-    container_name: application-backend
-    ports:
-      - "8080:8080"
-    networks:
-      - application-backend-network
-    depends_on:
-      - postgres-patient-db
-      - postgres-doctor-db
-      - postgres-diagnosis-db
-      - postgres-feedback-db
-
   postgres-patient-db:
     image: postgres:12.3-alpine
     container_name: patient-db
@@ -59,8 +46,8 @@ services:
       image: postgres:12.3-alpine
       container_name: feedback-db
       environment:
-        - POSTGRES_PASSWORD=root
         - POSTGRES_DB=feedback_db
+        - POSTGRES_PASSWORD=root
       ports:
         # don't expose ports in production
         - "8053:5432" # not sure which port should I change or no need to change
