@@ -43,7 +43,7 @@ public class PatientService {
         }
     }
 
-    public String deletePatient(long id) {
+    public String deletePatient(Long id) {
         if (patientRepository.existsById(id)) {
             patientRepository.deleteById(id);;
             return "Delete patient successfully!";
