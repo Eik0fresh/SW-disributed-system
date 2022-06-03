@@ -25,6 +25,48 @@ services:
     volumes:
       - ./database/Patient.sql:/docker-entrypoint-initdb.d/patient.sql  # file name in docker container should also be changed right?
 
+  postgres-doctor-db:
+    image: postgres:12.3-alpine
+    container_name: doctor-db
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=doctor_db
+    ports:
+      # don't expose ports in production
+      - "8051:5432" # not sure which port should I change or no need to change
+    networks:
+      - application-backend-network
+    volumes:
+      - ./database/Doctor.sql:/docker-entrypoint-initdb.d/doctor.sql # file name in docker container should also be changed right?
+
+  postgres-diagnosis-db:
+    image: postgres:12.3-alpine
+    container_name: diagnosis-db
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=diagnosis_db
+    ports:
+      # don't expose ports in production
+      - "8052:5432" # not sure which port should I change or no need to change
+    networks:
+      - application-backend-network
+    volumes:
+      - ./database/Diagnosis.sql:/docker-entrypoint-initdb.d/diagnosis.sql # file name in docker container should also be changed right?
+
+  postgres-feedback-db:
+      image: postgres:12.3-alpine
+      container_name: feedback-db
+      environment:
+        - POSTGRES_DB=feedback_db
+        - POSTGRES_PASSWORD=root
+      ports:
+        # don't expose ports in production
+        - "8053:5432" # not sure which port should I change or no need to change
+      networks:
+        - application-backend-network
+      volumes:
+        - ./database/Feedback.sql:/docker-entrypoint-initdb.d/feedback.sql # file name in docker container should also be changed right?
+
 networks:
   app-network:
     driver: bridge
