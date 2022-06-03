@@ -7,7 +7,7 @@ services:
     ports:
       - "8084:8084"
     networks:
-      - feedback-network
+      - application-backend-network
     depends_on:
       - postgres-feedback-db
 
@@ -19,13 +19,13 @@ services:
       - POSTGRES_DB=feedback_db
     ports:
       # don't expose ports in production
-      - "8051:5432"
+      - "8053:5432"
     networks:
-      - feedback-network
+      - application-backend-network
     volumes:
       - ./database/Feedback.sql:/docker-entrypoint-initdb.d/feedback.sql  # file name in docker container should also be changed right?
 
 networks:
-  feedback-network:
+  application-backend-network:
     driver: bridge
-    name: feedback-network
+    name: application-backend-network
