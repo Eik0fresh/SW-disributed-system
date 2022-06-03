@@ -7,7 +7,7 @@ services:
     ports:
       - "8081:8081"
     networks:
-      - patient-network
+      - app-network
     depends_on:
       - postgres-patient-db
 
@@ -21,11 +21,11 @@ services:
       # don't expose ports in production
       - "8050:5432"
     networks:
-      - patient-network
+      - app-network
     volumes:
       - ./database/Patient.sql:/docker-entrypoint-initdb.d/patient.sql  # file name in docker container should also be changed right?
 
 networks:
-  patient-network:
+  app-network:
     driver: bridge
-    name: patient-network
+    name: app-network

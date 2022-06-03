@@ -15,10 +15,7 @@ public class PatientService {
     
     public String addPatient(PatientDto patient) {
         if (!patientRepository.existsByFirstnameAndSurname(patient.getFirstname(), patient.getSurname())) {
-            Patient newPatient = new Patient();
-            newPatient.setFirstname(patient.getFirstname());
-            newPatient.setSurname(patient.getSurname());
-            newPatient.setEmail(patient.getEmail());
+            Patient newPatient = new Patient(null, patient.getFirstname(), patient.getSurname(), patient.getEmail());
             patientRepository.save(newPatient);
             return "Create patient successfully!";
         } else {
