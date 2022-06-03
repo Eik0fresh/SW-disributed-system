@@ -74,8 +74,8 @@ services:
       image: postgres:12.3-alpine
       container_name: feedback-db
       environment:
-        - POSTGRES_PASSWORD=root
         - POSTGRES_DB=feedback_db
+        - POSTGRES_PASSWORD=root
       ports:
         # don't expose ports in production
         - "8053:5432" # not sure which port should I change or no need to change
