@@ -1,5 +1,16 @@
 version: '3'
 services:
+  patient-service:
+    image: ed-application/patient-service:1.0
+    build: ./patient-management/
+    container_name: patient-service
+    ports:
+      - "8081:8081"
+    networks:
+      - app-network
+    depends_on:
+      - postgres-patient-db
+
   postgres-patient-db:
     image: postgres:12.3-alpine
     container_name: patient-db
@@ -10,7 +21,7 @@ services:
       # don't expose ports in production
       - "8050:5432"
     networks:
-      - application-backend-network
+      - app-network
     volumes:
       - ./database/Patient.sql:/docker-entrypoint-initdb.d/patient.sql  # file name in docker container should also be changed right?
 
@@ -57,5 +68,6 @@ services:
         - ./database/Feedback.sql:/docker-entrypoint-initdb.d/feedback.sql # file name in docker container should also be changed right?
 
 networks:
-  application-backend-network:
+  app-network:
     driver: bridge
+    name: app-network
