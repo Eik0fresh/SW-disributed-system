@@ -1,5 +1,86 @@
 version: '3'
 services:
+  eureka:
+    build: ./service-discovery/
+    container_name: eureka
+    ports:
+      - "8761:8761"
+    networks:
+      - application-backend-network
+
+  demo-service:
+    build: ./demo/
+    container_name: demo-service
+    ports:
+      - "8081:8081"
+    env_file:
+      - ./demo/.env
+    networks:
+      - application-backend-network
+
+  ed-gateway:
+    build: ./gateway/
+    container_name: ed-gateway
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./gateway/.env
+    networks:
+      - application-backend-network
+
+  patient-service:
+    image: ed-application/patient-service:1.0
+    build: ./patient-management/
+    container_name: patient-service
+    ports:
+      - "8081:8081"
+    networks:
+      - application-backend-network
+    depends_on:
+      - postgres-patient-db
+
+  postgres-patient-db:
+    image: postgres:12.3-alpine
+    container_name: patient-db
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=patient_db
+    ports:
+      # don't expose ports in production
+      - "8050:5432"
+    networks:
+      - application-backend-network
+    volumes:
+      - ./database/Patient.sql:/docker-entrypoint-initdb.d/init.sql  # file name in docker container should also be changed right?
+
+  postgres-doctor-db:
+    image: postgres:12.3-alpine
+    container_name: doctor-db
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=doctor_db
+    ports:
+      # don't expose ports in production
+      - "8051:5432" # not sure which port should I change or no need to change
+    networks:
+      - application-backend-network
+    volumes:
+      - ./database/Doctor.sql:/docker-entrypoint-initdb.d/init.sql # file name in docker container should also be changed right?
+
+  postgres-diagnosis-db:
+    image: postgres:12.3-alpine
+    container_name: diagnosis-db
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=diagnosis_db
+    ports:
+      # don't expose ports in production
+      - "8052:5432" # not sure which port should I change or no need to change
+    networks:
+      - application-backend-network
+    volumes:
+      - ./database/Diagnosis.sql:/docker-entrypoint-initdb.d/init.sql # file name in docker container should also be changed right?
+
   feedback-service:
     image: ed-application/feedback-service:1.0
     build: ./feedbacks/
@@ -10,20 +91,20 @@ services:
       - application-backend-network
     depends_on:
       - postgres-feedback-db
-
+      
   postgres-feedback-db:
-    image: postgres:12.3-alpine
-    container_name: feedback-db
-    environment:
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=feedback_db
-    ports:
-      # don't expose ports in production
-      - "8053:5432"
-    networks:
-      - application-backend-network
-    volumes:
-      - ./database/Feedback.sql:/docker-entrypoint-initdb.d/feedback.sql  # file name in docker container should also be changed right?
+      image: postgres:12.3-alpine
+      container_name: feedback-db
+      environment:
+        - POSTGRES_DB=feedback_db
+        - POSTGRES_PASSWORD=root
+      ports:
+        # don't expose ports in production
+        - "8053:5432" # not sure which port should I change or no need to change
+      networks:
+        - application-backend-network
+      volumes:
+        - ./database/Feedback.sql:/docker-entrypoint-initdb.d/init.sql # file name in docker container should also be changed right?
 
 networks:
   application-backend-network:
