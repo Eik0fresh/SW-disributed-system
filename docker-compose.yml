@@ -1,31 +1,31 @@
 version: '3'
 services:
-  application-backend-services:
-    build: ./backend/
-    container_name: application-backend
+  doctor-service:
+    build: ./doctor-management/
+    container_name: doctor-service
     ports:
-      - "8080:8080"
+      - "8082:8082"
     networks:
-      - application-backend-network
+      - doctor-network
     depends_on:
-      - postgres-patient-db
+#      - postgres-patient-db
       - postgres-doctor-db
-      - postgres-diagnosis-db
-      - postgres-feedback-db
-
-  postgres-patient-db:
-    image: postgres:12.3-alpine
-    container_name: patient-db
-    environment:
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=patient_db
-    ports:
-      # don't expose ports in production
-      - "8050:5432"
-    networks:
-      - application-backend-network
-    volumes:
-      - ./database/Patient.sql:/docker-entrypoint-initdb.d/patient.sql  # file name in docker container should also be changed right?
+#      - postgres-diagnosis-db
+#      - postgres-feedback-db
+#
+#  postgres-patient-db:
+#    image: postgres:12.3-alpine
+#    container_name: patient-db
+#    environment:
+#      - POSTGRES_PASSWORD=root
+#      - POSTGRES_DB=patient_db
+#    ports:
+#      # don't expose ports in production
+#      - "8050:5432"
+#    networks:
+#      - application-backend-network
+#    volumes:
+#      - ./database/Patient.sql:/docker-entrypoint-initdb.d/patient.sql  # file name in docker container should also be changed right?
 
   postgres-doctor-db:
     image: postgres:12.3-alpine
@@ -37,38 +37,39 @@ services:
       # don't expose ports in production
       - "8051:5432" # not sure which port should I change or no need to change
     networks:
-      - application-backend-network
+      - doctor-network
     volumes:
       - ./database/Doctor.sql:/docker-entrypoint-initdb.d/doctor.sql # file name in docker container should also be changed right?
 
-  postgres-diagnosis-db:
-    image: postgres:12.3-alpine
-    container_name: diagnosis-db
-    environment:
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=diagnosis_db
-    ports:
-      # don't expose ports in production
-      - "8052:5432" # not sure which port should I change or no need to change
-    networks:
-      - application-backend-network
-    volumes:
-      - ./database/Diagnosis.sql:/docker-entrypoint-initdb.d/diagnosis.sql # file name in docker container should also be changed right?
-
-  postgres-feedback-db:
-      image: postgres:12.3-alpine
-      container_name: feedback-db
-      environment:
-        - POSTGRES_PASSWORD=root
-        - POSTGRES_DB=feedback_db
-      ports:
-        # don't expose ports in production
-        - "8053:5432" # not sure which port should I change or no need to change
-      networks:
-        - application-backend-network
-      volumes:
-        - ./database/Feedback.sql:/docker-entrypoint-initdb.d/feedback.sql # file name in docker container should also be changed right?
+#  postgres-diagnosis-db:
+#    image: postgres:12.3-alpine
+#    container_name: diagnosis-db
+#    environment:
+#      - POSTGRES_PASSWORD=root
+#      - POSTGRES_DB=diagnosis_db
+#    ports:
+#      # don't expose ports in production
+#      - "8052:5432" # not sure which port should I change or no need to change
+#    networks:
+#      - application-backend-network
+#    volumes:
+#      - ./database/Diagnosis.sql:/docker-entrypoint-initdb.d/diagnosis.sql # file name in docker container should also be changed right?
+  
+#  postgres-feedback-db:
+#      image: postgres:12.3-alpine
+#      container_name: feedback-db
+#      environment:
+#        - POSTGRES_PASSWORD=root
+#        - POSTGRES_DB=feedback_db
+#      ports:
+#        # don't expose ports in production
+#        - "8053:5432" # not sure which port should I change or no need to change
+#      networks:
+#        - application-backend-network
+#      volumes:
+#        - ./database/Feedback.sql:/docker-entrypoint-initdb.d/feedback.sql # file name in docker container should also be changed right?
 
 networks:
-  application-backend-network:
+  doctor-network:
     driver: bridge
+    name: doctor-network
