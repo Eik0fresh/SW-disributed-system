@@ -35,7 +35,7 @@ services:
     ports:
       - "8081:8081"
     networks:
-      - app-network
+      - application-backend-network
     depends_on:
       - postgres-patient-db
 
@@ -49,7 +49,7 @@ services:
       # don't expose ports in production
       - "8050:5432"
     networks:
-      - app-network
+      - application-backend-network
     volumes:
       - ./database/Patient.sql:/docker-entrypoint-initdb.d/init.sql  # file name in docker container should also be changed right?
 
@@ -81,6 +81,17 @@ services:
     volumes:
       - ./database/Diagnosis.sql:/docker-entrypoint-initdb.d/init.sql # file name in docker container should also be changed right?
 
+  feedback-service:
+    image: ed-application/feedback-service:1.0
+    build: ./feedbacks/
+    container_name: feedback-service
+    ports:
+      - "8084:8084"
+    networks:
+      - application-backend-network
+    depends_on:
+      - postgres-feedback-db
+      
   postgres-feedback-db:
       image: postgres:12.3-alpine
       container_name: feedback-db
@@ -96,6 +107,6 @@ services:
         - ./database/Feedback.sql:/docker-entrypoint-initdb.d/init.sql # file name in docker container should also be changed right?
 
 networks:
-  app-network:
+  application-backend-network:
     driver: bridge
-    name: app-network
+    name: application-backend-network
