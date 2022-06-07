@@ -45,13 +45,13 @@ CREATE TABLE diagnosis_db.doctor (
 --     CACHE 1
 -- );
 
-CREATE TYPE level AS ENUM ('very urgent', 'urgent', 'normal');
+CREATE TYPE diagnosis_db.level AS ENUM ('very urgent', 'urgent', 'normal');
 
 CREATE TABLE diagnosis_db.guidance (
     g_id      integer  NOT NULL PRIMARY KEY,
     dia_id    integer  NOT NULL,
     guidance  text     NOT NULL,
-    priority  level    NOT NULL,   -- data type should be double checked
+    priority  diagnosis_db.level   NOT NULL,   -- data type should be double checked
     day       date     NOT NULL,
     done      boolean  NOT NULL
 );
@@ -64,10 +64,6 @@ ALTER TABLE diagnosis_db.guidance ALTER COLUMN g_id ADD GENERATED ALWAYS AS IDEN
     NO MAXVALUE
     CACHE 1
 );
-
-ALTER TABLE ONLY diagnosis_db.guidance
-    ADD CONSTRAINT guidance_dia_id_fkey FOREIGN KEY (dia_id) REFERENCES diagnosis_db.diagnosis(dia_id) ON DELETE CASCADE ON UPDATE CASCADE;
-
 
 CREATE TABLE diagnosis_db.diagnosis (
     dia_id  integer NOT NULL PRIMARY KEY,
@@ -86,6 +82,8 @@ ALTER TABLE diagnosis_db.diagnosis ALTER COLUMN dia_id ADD GENERATED ALWAYS AS I
     CACHE 1
 );
 
+ALTER TABLE ONLY diagnosis_db.guidance
+    ADD CONSTRAINT guidance_dia_id_fkey FOREIGN KEY (dia_id) REFERENCES diagnosis_db.diagnosis(dia_id) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE ONLY diagnosis_db.diagnosis
     ADD CONSTRAINT diagnosis_g_id_fkey FOREIGN KEY (g_id) REFERENCES diagnosis_db.guidance(g_id) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE ONLY diagnosis_db.diagnosis
