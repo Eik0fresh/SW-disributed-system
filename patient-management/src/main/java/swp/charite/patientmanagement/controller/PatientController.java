@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import swp.charite.patientmanagement.dto.PatientDto;
-import swp.charite.patientmanagement.model.Patient;
 import swp.charite.patientmanagement.service.PatientService;
 
 @RestController
@@ -30,7 +29,7 @@ public class PatientController {
     }
 
     @PostMapping(value = "/query")
-    public Patient query(@RequestBody PatientDto patient) {
+    public Long query(@RequestBody PatientDto patient) {
         return patientService.queryPatient(patient);
     }
 

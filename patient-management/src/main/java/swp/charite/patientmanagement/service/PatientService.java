@@ -34,12 +34,12 @@ public class PatientService {
         }
     }
 
-    public Patient queryPatient(PatientDto patient) {
+    public Long queryPatient(PatientDto patient) {
         if (!patientRepository.existsByFirstnameAndSurname(patient.getFirstname(), patient.getSurname())) {
             return null;
         } else {
             Patient oldPatient = patientRepository.findByFirstnameAndSurname(patient.getFirstname(), patient.getSurname());
-            return oldPatient;
+            return oldPatient.getP_id();
         }
     }
 
