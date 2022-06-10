@@ -15,7 +15,7 @@ public class WorkService {
 
     public String addWork(WorkDto work) {
         if (!workRepository.existsByD_idAndC_id(work.getDoctor_ID(), work.getCenter_ID())) {
-            Work newWork = new Work(null, work.getDoctor_ID(), work.getCenter_ID());
+            Work newWork = new Work(0L, work.getDoctor_ID(), work.getCenter_ID());
             workRepository.save(newWork);
             return "Create Workrelation successfully!";
         } else {

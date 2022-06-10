@@ -17,7 +17,6 @@ CREATE TABLE doctor_db.doctor (
     d_id      integer NOT NULL PRIMARY KEY,
     firstname text    NOT NULL,
     surname   text    NOT NULL,
-    gender    varchar NOT NULL,
     email     text    NOT NULL,    
     UNIQUE (firstname, surname)
 );
