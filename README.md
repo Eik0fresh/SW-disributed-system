@@ -95,5 +95,5 @@ Current requestbody and responsebody are only for presentation. A common respons
 | ----------- | ----------- |
 | URL| http://localhost:8083/guidance/query |
 | Method| POST |
-| Input | {"firstname": "Foo","surname": "Wang", "email": "wang@example.com"} |
+| Input | {"firstname": "Foo","surname": "Wang"} |
 | Output| Guidance in Json format |

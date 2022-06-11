@@ -13,13 +13,13 @@ public class PatientService {
     @Autowired
     private PatientRepository patientRepository;
     
-    public String addPatient(PatientDto patient) {
+    public Boolean addPatient(PatientDto patient) {
         if (!patientRepository.existsByFirstnameAndSurname(patient.getFirstname(), patient.getSurname())) {
             Patient newPatient = new Patient(null, patient.getFirstname(), patient.getSurname(), patient.getEmail());
             patientRepository.save(newPatient);
-            return "Create patient successfully!";
+            return true;
         } else {
-            return "Patient exists!";
+            return false;
         }
     }
 
@@ -43,12 +43,12 @@ public class PatientService {
         }
     }
 
-    public String deletePatient(Long id) {
+    public Boolean deletePatient(Long id) {
         if (patientRepository.existsById(id)) {
             patientRepository.deleteById(id);;
-            return "Delete patient successfully!";
+            return true;
         } else {
-            return "Invalid patient ID.";
+            return false;
         }
     }
 }

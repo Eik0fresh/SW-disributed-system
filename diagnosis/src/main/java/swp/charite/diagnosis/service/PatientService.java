@@ -1,16 +1,37 @@
 package swp.charite.diagnosis.service;
 
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import swp.charite.diagnosis.dto.PatientDto;
+import swp.charite.diagnosis.model.Patient;
+import swp.charite.diagnosis.repository.PatientRepository;
 
-@Component
-@FeignClient(value = "PATIENT-MANAGEMENT")
-public interface PatientService {
+@Service
+public class PatientService {
     
-    @PostMapping(value = "/patient/query")
-    public Long query(@RequestBody PatientDto patient);
+    @Autowired
+    private PatientRepository patientRepository;
+
+    public void create(Patient patient) {
+        if (!patientRepository.existsById(patient.getP_id())) {
+            Patient newPatient = new Patient(patient.getP_id(), patient.getFirstname(), patient.getSurname());
+            patientRepository.save(newPatient);
+        } 
+    }
+
+    public Long query(PatientDto patient) {
+        if (!patientRepository.existsByFirstnameAndSurname(patient.getFirstname(), patient.getSurname())) {
+            return null;
+        } else {
+            Patient oldPatient = patientRepository.findByFirstnameAndSurname(patient.getFirstname(), patient.getSurname());
+            return oldPatient.getP_id();
+        }
+    }
+
+    public void delete(Long id) {
+        if (patientRepository.existsById(id)) {
+            patientRepository.deleteById(id);
+        }
+    }
 }

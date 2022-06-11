@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import swp.charite.patientmanagement.dto.PatientDto;
+import swp.charite.patientmanagement.dto._PatientDto;
+import swp.charite.patientmanagement.service.DiagnosisFeignService;
 import swp.charite.patientmanagement.service.PatientService;
 
 @RestController
@@ -18,9 +20,20 @@ public class PatientController {
     @Autowired
     private PatientService patientService;
 
+    @Autowired
+    private DiagnosisFeignService diagnosisFeignService;
+
     @PostMapping(value = "/create")
     public String create(@RequestBody PatientDto patient) {
-        return patientService.addPatient(patient);
+        Boolean status = patientService.addPatient(patient);
+        if (status == true) {
+            Long p_id = patientService.queryPatient(patient);
+            _PatientDto newPatient = new _PatientDto(p_id, patient.getFirstname(), patient.getSurname());
+            diagnosisFeignService.createPatient(newPatient);
+            return "Create patient successfully!";
+        } else {
+            return "Patient exists.";
+        } 
     }
 
     @PostMapping(value = "/update")
@@ -35,7 +48,13 @@ public class PatientController {
 
     @GetMapping(value = "/delete/{id}")
     public String delete(@PathVariable("id") Long id) {
-        return patientService.deletePatient(id);
+        Boolean status = patientService.deletePatient(id);
+        if (status == true) {
+            diagnosisFeignService.deletePatient(id);
+            return "Delete patient successfully!";
+        } else {
+            return "Invalid patient ID";
+        }
     }
     
 }

@@ -51,7 +51,7 @@ services:
     networks:
       - application-backend-network
     volumes:
-      - ./database/Patient.sql:/docker-entrypoint-initdb.d/init.sql  # file name in docker container should also be changed right?
+      - ./database/Patient.sql:/docker-entrypoint-initdb.d/init.sql  
 
   # postgres-doctor-db:
   #   image: postgres:12.3-alpine

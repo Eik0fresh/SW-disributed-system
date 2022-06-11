@@ -13,12 +13,12 @@ CREATE SCHEMA diagnosis_db;
 
 SET default_table_access_method = heap;
 
--- CREATE TABLE diagnosis_db.patient (
---     p_id      integer NOT NULL PRIMARY KEY,
---     firstname text    NOT NULL,
---     surname   text    NOT NULL,   
---     UNIQUE (firstname, surname)
--- );
+CREATE TABLE diagnosis_db.patient (
+    p_id      integer NOT NULL PRIMARY KEY,
+    firstname text    NOT NULL,
+    surname   text    NOT NULL,   
+    UNIQUE (firstname, surname)
+);
 
 -- CREATE TABLE diagnosis_db.doctor (
 --     d_id      integer NOT NULL PRIMARY KEY,
@@ -68,7 +68,7 @@ ALTER TABLE ONLY diagnosis_db.guidance
     ADD CONSTRAINT guidance_dia_id_fkey FOREIGN KEY (dia_id) REFERENCES diagnosis_db.diagnosis(dia_id) ON DELETE CASCADE ON UPDATE CASCADE;
 -- ALTER TABLE ONLY diagnosis_db.diagnosis
 --     ADD CONSTRAINT diagnosis_g_id_fkey FOREIGN KEY (g_id) REFERENCES diagnosis_db.guidance(g_id) ON DELETE CASCADE ON UPDATE CASCADE;
--- ALTER TABLE ONLY diagnosis_db.diagnosis
---     ADD CONSTRAINT diagnosis_p_id_fkey FOREIGN KEY (p_id) REFERENCES diagnosis_db.patient(p_id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE ONLY diagnosis_db.diagnosis
+    ADD CONSTRAINT diagnosis_p_id_fkey FOREIGN KEY (p_id) REFERENCES diagnosis_db.patient(p_id) ON DELETE CASCADE ON UPDATE CASCADE;
 -- ALTER TABLE ONLY diagnosis_db.diagnosis
 --     ADD CONSTRAINT diagnosis_d_id_fkey FOREIGN KEY (d_id) REFERENCES diagnosis_db.doctor(d_id) ON DELETE CASCADE ON UPDATE CASCADE;
