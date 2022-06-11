@@ -1,4 +1,4 @@
-package swp.charite.demo;
+package swp.charite.demo.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

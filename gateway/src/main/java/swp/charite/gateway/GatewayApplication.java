@@ -23,8 +23,8 @@ public class GatewayApplication {
     @Bean
     public RouteLocator myRoutes(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("simple", p -> p.path("/ed/demo/**")
-                        .uri("lb://demo"))
+                .route("simple", p -> p.path("/demo/**").uri("lb://demo"))
+                .route("patient", p -> p.path("/patient/**").uri("lb://patient-service"))
                 .build();
     }
 

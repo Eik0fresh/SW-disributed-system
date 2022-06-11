@@ -29,3 +29,13 @@ ALTER TABLE patient_db.patient ALTER COLUMN p_id ADD GENERATED ALWAYS AS IDENTIT
     NO MAXVALUE
     CACHE 1
 );
+
+CREATE TABLE patient_db.outbox (
+    id UUID NOT NULL PRIMARY KEY,
+    aggregate_type text NOT NULL,
+    aggregate_id text NOT NULL,
+    type text NOT NULL,
+    payload text NOT NULL
+);
+
+ALTER TABLE patient_db.outbox OWNER TO postgres;
