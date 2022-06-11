@@ -14,7 +14,7 @@ import swp.charite.doctormanagement.service.DoctorService;
 
 
 @RestController
-@RequestMapping("/doctors")
+@RequestMapping("/doctor")
 public class DoctorController {
 
     @Autowired

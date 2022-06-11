@@ -11,8 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class WorkDto {
 
-    private Long work_ID;
-    private Long center_ID;
-    private Long doctor_ID;
+    private Long w_id;
+    private Long d_id;
+    private Long c_id;
     
 }

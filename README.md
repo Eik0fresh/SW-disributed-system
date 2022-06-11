@@ -14,30 +14,30 @@ Will probably change later
 #### Create Doctor
 | | Value |
 | ----------- | ----------- |
-| URL| http://localhost:8082/doctors/create|
+| URL| http://localhost:8082/doctor/create|
 | Method| POST |
-| Input | {"firstname": "Foo","surname": "Wang", "email": "wang@example.com"} |
+| Input | {"firstname": "Anton","surname": "Mustermann", "email": "Anton@Muster.com"} |
 | Output| Message of success or fail|
 #### Delete Doctor
 | | Value |
 | ----------- | ----------- |
-| URL| http://localhost:8082/doctors/delete/{id}|
+| URL| http://localhost:8082/doctor/delete/{id}|
 | Method| Get |
 | Input |  |
 | Output| Message of success or fail|
 #### Query Doctor's Information
 | | Value |
 | ----------- | ----------- |
-| URL| http://localhost:8082/doctors/query|
+| URL| http://localhost:8082/doctor/query|
 | Method| POST |
-| Input | {"firstname": "Foo","surname": "Wang", "email": "wang@example.com"} |
+| Input | {"firstname": "Max","surname": "Mustermann"} |
 | Output| Patient information in JSON format {"d_id", "firstname","surname","email"}|
 #### Update Doctor's Email
 | | Value |
 | ----------- | ----------- |
-| URL| http://localhost:8082/doctors/update|
+| URL| http://localhost:8082/doctor/update|
 | Method| POST |
-| Input | {"firstname": "Foo","surname": "Wang", "email": "wang@example.com"} |
+| Input | {"firstname": "Max","surname": "Mustermann", "email": "Max2@Muster.com"} |
 | Output| Message of success or fail|
 
 ### Workplace Doctor relation
@@ -53,31 +53,31 @@ create Work does not check if both (doctor, center are correct)
 #### Delete Work
 | | Value |
 | ----------- | ----------- |
-| URL| http://localhost:8081/work/delete/|
+| URL| http://localhost:8082/work/delete|
 | Method| Get |
 | Input | {"d_id": 0,"c_id": 0} |
 | Output| Message of success or fail|
 
 
 ### Location
-#### Create Location
+#### Create center
 | | Value |
 | ----------- | ----------- |
-| URL| http://localhost:8082/location/create|
+| URL| http://localhost:8082/center/create|
 | Method| POST |
-| Input | {"name": "mitte", "location":"mitte"} |
+| Input | {"name": "Steglitz", "location":"Schlossstraße"} |
 | Output| Message of success or fail|
 #### Delete location
 | | Value |
 | ----------- | ----------- |
-| URL| http://localhost:8082/location/delete/{id}|
+| URL| http://localhost:8082/center/delete/{id}|
 | Method| Get |
 | Input |  |
 | Output| Message of success or fail|
 #### Query Location's Information
 | | Value |
 | ----------- | ----------- |
-| URL| http://localhost:8082/location/query|
+| URL| http://localhost:8082/center/query|
 | Method| POST |
-| Input | {"name":"mitte"} |
+| Input | {"name":"Mitte"} |
 | Output| Patient information in JSON format {"l_id", "name","location"}|

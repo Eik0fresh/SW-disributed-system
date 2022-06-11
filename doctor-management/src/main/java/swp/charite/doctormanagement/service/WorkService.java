@@ -14,8 +14,8 @@ public class WorkService {
     private WorkRepository workRepository;
 
     public String addWork(WorkDto work) {
-        if (!workRepository.existsByD_idAndC_id(work.getDoctor_ID(), work.getCenter_ID())) {
-            Work newWork = new Work(null, work.getDoctor_ID(), work.getCenter_ID());
+        if (!workRepository.existsByD_idAndC_id(work.getD_id(), work.getC_id())) {
+            Work newWork = new Work(null, work.getD_id(), work.getC_id());
             workRepository.save(newWork);
             return "Create Workrelation successfully!";
         } else {
@@ -24,8 +24,8 @@ public class WorkService {
     }
 
     public String deleteWork(WorkDto work) {   
-        if (workRepository.existsByD_idAndC_id(work.getDoctor_ID(), work.getCenter_ID())) {
-            Work oldWork = workRepository.findByD_idAndC_id(work.getDoctor_ID(), work.getCenter_ID());
+        if (workRepository.existsByD_idAndC_id(work.getD_id(), work.getC_id())) {
+            Work oldWork = workRepository.findByD_idAndC_id(work.getD_id(), work.getC_id());
             workRepository.deleteById(oldWork.getW_id());
         return "Center doctor successfully!";
         } else {

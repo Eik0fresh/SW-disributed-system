@@ -17,10 +17,7 @@ CREATE TABLE patient_db.patient (
     p_id      integer NOT NULL PRIMARY KEY,
     firstname text    NOT NULL,
     surname   text    NOT NULL,
-    gender    varchar NOT NULL,
-    birthday  date    NOT NULL,
-    email     text    NOT NULL,
-    phone     bigint  NOT NULL,      
+    email     text    NOT NULL,     
     UNIQUE (firstname, surname)
 );
 
