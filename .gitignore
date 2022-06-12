@@ -1,3 +1,6 @@
+.vscode
 .idea
 
-.vscode
+demo/.mvn
+gateway/.mvn
+service-discovery/.mvn
