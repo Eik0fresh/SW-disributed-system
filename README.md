@@ -71,3 +71,29 @@ Current requestbody and responsebody are only for presentation. A common respons
 | Method| POST |
 | Input | {"g_id": 0, "guidance": "go to see doctor"} |
 | Output| "Create guidance successfully!" or "Guidance exists!"|
+
+## Diagnosis-Service
+Diagnosis-service provides create diagnosis and guidance functions and query guidance via patient information.
+### API
+Current requestbody and responsebody are only for presentation. A common response type might be needed later to communicate with client.
+#### Create Diagnosis
+| | Value |
+| ----------- | ----------- |
+| URL| http://localhost:8083/diagnosis/create |
+| Method| POST |
+| Input | {"dia_id": 123, "patientId": 0, "doctorId":1} |
+| Output| "Create diagnosis successfully!" or "Diagnosis exists!" |
+#### Create Guidance
+| | Value |
+| ----------- | ----------- |
+| URL| http://localhost:8083/guidance/create |
+| Method| POST |
+| Input | {"dia_id": 123, "guidance": "go to house doctor", "priority": "urgent"} |
+| Output| "Create guidance successfully!" or "Guidance exists!" |
+#### Query Guidance
+| | Value |
+| ----------- | ----------- |
+| URL| http://localhost:8083/guidance/query |
+| Method| POST |
+| Input | {"firstname": "Foo","surname": "Wang"} |
+| Output| Guidance in Json format |

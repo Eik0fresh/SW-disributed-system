@@ -28,7 +28,7 @@ public class PatientService {
     private OutboxRepository outboxRepository;
 
     @Transactional
-    public String addPatient(PatientDto patient) {
+    public Boolean create(PatientDto patient) {
         if (!patientRepository.existsByFirstnameAndSurname(patient.getFirstname(), patient.getSurname())) {
             Patient newPatient = new Patient(null, patient.getFirstname(), patient.getSurname(), patient.getEmail());
             patientRepository.save(newPatient);
@@ -39,13 +39,13 @@ public class PatientService {
             outboxRepository.save(o);
             outboxRepository.delete(o);
 
-            return "Create patient successfully!";
+            return true;
         } else {
-            return "Patient exists!";
+            return false;
         }
     }
 
-    public String updateEmail(PatientDto patient) {
+    public String update(PatientDto patient) {
         if (!patientRepository.existsByFirstnameAndSurname(patient.getFirstname(), patient.getSurname())) {
             return "No patient exists!";
         } else {
@@ -56,21 +56,21 @@ public class PatientService {
         }
     }
 
-    public Patient queryPatient(PatientDto patient) {
+    public Long query(PatientDto patient) {
         if (!patientRepository.existsByFirstnameAndSurname(patient.getFirstname(), patient.getSurname())) {
             return null;
         } else {
             Patient oldPatient = patientRepository.findByFirstnameAndSurname(patient.getFirstname(), patient.getSurname());
-            return oldPatient;
+            return oldPatient.getP_id();
         }
     }
 
-    public String deletePatient(Long id) {
+    public Boolean delete(Long id) {
         if (patientRepository.existsById(id)) {
             patientRepository.deleteById(id);;
-            return "Delete patient successfully!";
+            return true;
         } else {
-            return "Invalid patient ID.";
+            return false;
         }
     }
 }

@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import swp.charite.patientmanagement.dto.PatientDto;
-import swp.charite.patientmanagement.model.Patient;
+import swp.charite.patientmanagement.dto._PatientDto;
+import swp.charite.patientmanagement.service.DiagnosisFeignService;
 import swp.charite.patientmanagement.service.PatientService;
 
 @RestController
@@ -19,24 +20,41 @@ public class PatientController {
     @Autowired
     private PatientService patientService;
 
+    @Autowired
+    private DiagnosisFeignService diagnosisFeignService;
+
     @PostMapping(value = "/create")
-    public String create(@RequestBody PatientDto patient) {
-        return patientService.addPatient(patient);
+    public String createPatient(@RequestBody PatientDto patient) {
+        Boolean status = patientService.create(patient);
+        if (status == true) {
+            Long p_id = patientService.query(patient);
+            _PatientDto newPatient = new _PatientDto(p_id, patient.getFirstname(), patient.getSurname());
+            diagnosisFeignService.createPatient(newPatient);
+            return "Create patient successfully!";
+        } else {
+            return "Patient exists.";
+        } 
     }
 
     @PostMapping(value = "/update")
-    public String update(@RequestBody PatientDto patient) {
-        return patientService.updateEmail(patient);
+    public String updateEmail(@RequestBody PatientDto patient) {
+        return patientService.update(patient);
     }
 
     @PostMapping(value = "/query")
-    public Patient query(@RequestBody PatientDto patient) {
-        return patientService.queryPatient(patient);
+    public Long queryPatient(@RequestBody PatientDto patient) {
+        return patientService.query(patient);
     }
 
     @GetMapping(value = "/delete/{id}")
-    public String delete(@PathVariable("id") Long id) {
-        return patientService.deletePatient(id);
+    public String deletePatient(@PathVariable("id") Long id) {
+        Boolean status = patientService.delete(id);
+        if (status == true) {
+            diagnosisFeignService.deletePatient(id);
+            return "Delete patient successfully!";
+        } else {
+            return "Invalid patient ID";
+        }
     }
     
 }

@@ -98,15 +98,15 @@ services:
     networks:
       - application-backend-network
 
-  ed-gateway:
-    build: ./gateway/
-    container_name: ed-gateway
-    ports:
-      - "8080:8080"
-    env_file:
-      - ./gateway/.env
-    networks:
-      - application-backend-network
+  # ed-gateway:
+  #   build: ./gateway/
+  #   container_name: ed-gateway
+  #   ports:
+  #     - "8080:8080"
+  #   env_file:
+  #     - ./gateway/.env
+  #   networks:
+  #     - application-backend-network
 
   patient-service:
     image: ed-application/patient-service:1.0
@@ -135,6 +135,70 @@ services:
     volumes:
       - ./database/Patient.sql:/docker-entrypoint-initdb.d/init.sql  # file name in docker container should also be changed right?
       - ./database/initOutboxSettings.sh:/docker-entrypoint-initdb.d/init.sh
+
+  # postgres-doctor-db:
+  #   image: postgres:12.3-alpine
+  #   container_name: doctor-db
+  #   environment:
+  #     - POSTGRES_PASSWORD=root
+  #     - POSTGRES_DB=doctor_db
+  #   ports:
+  #     # don't expose ports in production
+  #     - "8051:5432" # not sure which port should I change or no need to change
+  #   networks:
+  #     - application-backend-network
+  #   volumes:
+  #     - ./database/Doctor.sql:/docker-entrypoint-initdb.d/init.sql # file name in docker container should also be changed right?
+
+  diagnosis-service:
+    image: ed-application/diagnosis-service:1.0
+    build: ./diagnosis/
+    container_name: diagnosis-service
+    ports:
+      - "8083:8083"
+    networks:
+      - application-backend-network
+    depends_on:
+      - postgres-diagnosis-db
+
+  postgres-diagnosis-db:
+    image: postgres:12.3-alpine
+    container_name: diagnosis-db
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=diagnosis_db
+    ports:
+      # don't expose ports in production
+      - "8052:5432" 
+    networks:
+      - application-backend-network
+    volumes:
+      - ./database/Diagnosis.sql:/docker-entrypoint-initdb.d/init.sql 
+
+  feedback-service:
+    image: ed-application/feedback-service:1.0
+    build: ./feedbacks/
+    container_name: feedback-service
+    ports:
+      - "8084:8084"
+    networks:
+      - application-backend-network
+    depends_on:
+      - postgres-feedback-db
+      
+  postgres-feedback-db:
+      image: postgres:12.3-alpine
+      container_name: feedback-db
+      environment:
+        - POSTGRES_DB=feedback_db
+        - POSTGRES_PASSWORD=root
+      ports:
+        # don't expose ports in production
+        - "8053:5432" # not sure which port should I change or no need to change
+      networks:
+        - application-backend-network
+      volumes:
+        - ./database/Feedback.sql:/docker-entrypoint-initdb.d/init.sql 
 
 networks:
   application-backend-network:
