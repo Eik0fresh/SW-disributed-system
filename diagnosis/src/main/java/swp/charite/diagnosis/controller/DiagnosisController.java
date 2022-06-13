@@ -31,14 +31,20 @@ public class DiagnosisController {
 
     @PostMapping(value = "/guidance/create")
     public String createGuidance(@RequestBody GuidanceDto guidance) {
-        return guidanceService.addGuidance(guidance);
+        return guidanceService.create(guidance);
     }
 
     @PostMapping(value = "/guidance/query")
     public Guidance queryGuidance(@RequestBody PatientDto patient) {
         Long p_id = patientService.query(patient);
         Long dia_id = diagnosisService.findDiagnosis(p_id);
-        return guidanceService.queryGuidance(dia_id);
+        return guidanceService.query(dia_id);
+    }
+
+    @GetMapping(value = "guidance/update/{g_id}")
+    public String doneGuidance(@PathVariable("g_id") Long g_id) {
+        guidanceService.update(g_id);
+        return "Guidance done!";
     }
 
     @PostMapping(value = "/diagnosis/create")

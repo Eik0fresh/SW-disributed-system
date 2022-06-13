@@ -15,7 +15,7 @@ public class GuidanceService {
     @Autowired
     private GuidanceRepository guidanceRepository;
 
-    public String addGuidance(GuidanceDto guidance) {
+    public String create(GuidanceDto guidance) {
         if (!guidanceRepository.existsByDiaId(guidance.getDia_id())){
             Date date = new Date();
             Guidance newGuidance = new Guidance(null, guidance.getDia_id(), guidance.getGuidance(),
@@ -27,11 +27,20 @@ public class GuidanceService {
         }
     }
 
-    public Guidance queryGuidance(Long dia_id) {
+    public Guidance query(Long dia_id) {
         if (guidanceRepository.existsByDiaId(dia_id)){
             return guidanceRepository.findByDiaId(dia_id);
         } else {
             return null;
+        }
+    }
+
+    public void update(Long g_id) {
+        if (guidanceRepository.existsById(g_id)) {
+            Date date = new Date();
+            Guidance oldGuidance = guidanceRepository.findByGuidanceId(g_id);
+            oldGuidance.setDate(date.toString());;
+            oldGuidance.setDone(true);;
         }
     }
 }

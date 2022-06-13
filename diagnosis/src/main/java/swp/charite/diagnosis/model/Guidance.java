@@ -23,7 +23,7 @@ public class Guidance {
     @Id
     @Column(name = "g_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long g_id;
+    private Long guidanceId;
 
     @Column(name = "dia_id", nullable = false)
     private Long diaId;
