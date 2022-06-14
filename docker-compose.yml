@@ -42,6 +42,18 @@ services:
       - postgres-patient-db
       - ed-gateway
       - kafka-broker
+  
+  doctor-service:
+    build: ./doctor-management/
+    container_name: doctor-service
+    ports:
+      - "5502:5502"
+    networks:
+      - application-backend-network
+    depends_on:
+      - postgres-doctor-db
+      - ed-gateway
+      - kafka-broker
 
   diagnosis-service:
     build: ./diagnosis/
@@ -198,7 +210,6 @@ services:
       - application-backend-network
     depends_on:
       - kafka-broker
-      - postgres-patient-db
 
 networks:
   application-backend-network:

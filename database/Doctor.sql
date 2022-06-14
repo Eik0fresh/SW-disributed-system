@@ -17,7 +17,6 @@ CREATE TABLE doctor_db.doctor (
     d_id      integer NOT NULL PRIMARY KEY,
     firstname text    NOT NULL,
     surname   text    NOT NULL,
-    gender    varchar NOT NULL,
     email     text    NOT NULL,    
     UNIQUE (firstname, surname)
 );
@@ -65,3 +64,16 @@ ALTER TABLE ONLY doctor_db.work
     ADD CONSTRAINT work_d_id_fkey FOREIGN KEY (d_id) REFERENCES doctor_db.doctor(d_id) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE ONLY doctor_db.work
     ADD CONSTRAINT work_c_id_fkey FOREIGN KEY (c_id) REFERENCES doctor_db.center(c_id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+INSERT INTO doctor_db.doctor (firstname, surname, email)
+VALUES  ('Max', 'Mustermann', 'Max@Muster.com'),
+         ('Andrea', 'Musterfrau', 'Andrea@Muster.com'),
+         ('Anton','Mustermann','Anton@Muster.com'),
+         ('Tina','Musterfrau','Tina@Muster.com');
+
+
+INSERT INTO doctor_db.center ("name", "location") 
+VALUES ('Mitte', 'Luisenstraße'),
+        ('Wedding', 'Amrumer Straße');
+
+INSERT INTO doctor_db.work (d_id, c_id)values (0,0), (0,1),(1,0),(2,0), (3,1);
