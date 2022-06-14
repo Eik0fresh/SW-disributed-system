@@ -1,5 +1,141 @@
 version: '3'
 services:
+  eureka:
+    build: ./service-discovery/
+    container_name: eureka
+    ports:
+      - "8761:8761"
+    networks:
+      - application-backend-network
+
+  ed-gateway:
+    build: ./gateway/
+    container_name: ed-gateway
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./gateway/.env
+    networks:
+      - application-backend-network
+
+  demo-service:
+    build: ./demo/
+    container_name: demo-service
+    ports:
+      - "5510:5510"
+    env_file:
+      - ./demo/.env
+    networks:
+      - application-backend-network
+    depends_on:
+      - ed-gateway
+      - kafka-broker
+
+  patient-service:
+    build: ./patient-management/
+    container_name: patient-service
+    ports:
+      - "5501:5501"
+    networks:
+      - application-backend-network
+    depends_on:
+      - postgres-patient-db
+      - ed-gateway
+      - kafka-broker
+  
+  doctor-service:
+    build: ./doctor-management/
+    container_name: doctor-service
+    ports:
+      - "5502:5502"
+    networks:
+      - application-backend-network
+    depends_on:
+      - postgres-doctor-db
+      - ed-gateway
+      - kafka-broker
+
+  diagnosis-service:
+    build: ./diagnosis/
+    container_name: diagnosis-service
+    ports:
+      - "5503:5503"
+    networks:
+      - application-backend-network
+    depends_on:
+      - postgres-diagnosis-db
+      - ed-gateway
+      - kafka-broker
+
+  feedback-service:
+    build: ./feedbacks/
+    container_name: feedback-service
+    ports:
+      - "5504:5504"
+    networks:
+      - application-backend-network
+    depends_on:
+      - postgres-feedback-db
+      - ed-gateway
+      - kafka-broker
+
+  postgres-patient-db:
+    image: postgres:12.3-alpine
+    container_name: patient-db
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=patient_db
+    ports:
+      # don't expose ports in production
+      - "5551:5432"
+    networks:
+      - application-backend-network
+    volumes:
+      - ./database/Patient.sql:/docker-entrypoint-initdb.d/init.sql  # file name in docker container should also be changed right?
+      - ./database/initOutboxSettings.sh:/docker-entrypoint-initdb.d/init.sh
+
+  postgres-doctor-db:
+    image: postgres:12.3-alpine
+    container_name: doctor-db
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=doctor_db
+    ports:
+      # don't expose ports in production
+      - "5552:5432" # not sure which port should I change or no need to change
+    networks:
+      - application-backend-network
+    volumes:
+      - ./database/Doctor.sql:/docker-entrypoint-initdb.d/init.sql # file name in docker container should also be changed right?
+
+  postgres-diagnosis-db:
+    image: postgres:12.3-alpine
+    container_name: diagnosis-db
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=diagnosis_db
+    ports:
+      # don't expose ports in production
+      - "5553:5432"
+    networks:
+      - application-backend-network
+    volumes:
+      - ./database/Diagnosis.sql:/docker-entrypoint-initdb.d/init.sql
+      
+  postgres-feedback-db:
+      image: postgres:12.3-alpine
+      container_name: feedback-db
+      environment:
+        - POSTGRES_DB=feedback_db
+        - POSTGRES_PASSWORD=root
+      ports:
+        # don't expose ports in production
+        - "5554:5432" # not sure which port should I change or no need to change
+      networks:
+        - application-backend-network
+      volumes:
+        - ./database/Feedback.sql:/docker-entrypoint-initdb.d/init.sql
+
   zookeeper:
     image: 'bitnami/zookeeper:latest'
     hostname: zookeeper
@@ -30,10 +166,10 @@ services:
       - ALLOW_PLAINTEXT_LISTENER=yes
       - KAFKA_CFG_BROKER_ID=1
       - KAFKA_TOPIC
-    depends_on:
-      - zookeeper
     networks:
       - application-backend-network
+    depends_on:
+      - zookeeper
 
   kafka-setup:
     image: confluentinc/cp-kafka:5.2.7
@@ -52,17 +188,17 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: ignored
     volumes:
       - ./DebeziumTransformer/connector_patient.json:/opt/docker/connectors/connector_patient.json
-    depends_on:
-      - kafka-broker
     networks:
       - application-backend-network
+    depends_on:
+      - kafka-broker
 
   patient-connect:
     build: ./DebeziumTransformer/
     container_name: patient-connect
     hostname: patient-connect
     ports:
-      - '8083:8083'
+      - '8100:8100'
     environment:
       GROUP_ID: 1
       CONFIG_STORAGE_TOPIC: patient_connect_config
@@ -70,140 +206,10 @@ services:
       STATUS_STORAGE_TOPIC: patient_connect_status
       BOOTSTRAP_SERVERS: kafka-broker:9092
       ZOOKEEPER_CONNECTION: zookeeper:2181
+    networks:
+      - application-backend-network
     depends_on:
-      - ed-gateway
       - kafka-broker
-      - postgres-patient-db
-    networks:
-      - application-backend-network
-
-  eureka:
-    build: ./service-discovery/
-    container_name: eureka
-    ports:
-      - "8761:8761"
-    networks:
-      - application-backend-network
-
-  demo-service:
-    build: ./demo/
-    container_name: demo-service
-    ports:
-      - "5051:5051"
-    env_file:
-      - ./demo/.env
-    depends_on:
-      - patient-connect
-      - ed-gateway
-    networks:
-      - application-backend-network
-
-  ed-gateway:
-    build: ./gateway/
-    container_name: ed-gateway
-    ports:
-      - "8080:8080"
-    env_file:
-      - ./gateway/.env
-    networks:
-      - application-backend-network
-
-  patient-service:
-    image: ed-application/patient-service:1.0
-    build: ./patient-management/
-    container_name: patient-service
-    ports:
-      - "8081:8081"
-    networks:
-      - application-backend-network
-    depends_on:
-      - postgres-patient-db
-      - ed-gateway
-      - kafka-broker
-
-
-
-  postgres-patient-db:
-    image: postgres:12.3-alpine
-    container_name: patient-db
-    environment:
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=patient_db
-    ports:
-      # don't expose ports in production
-      - "8050:5432"
-    networks:
-      - application-backend-network
-    volumes:
-      - ./database/Patient.sql:/docker-entrypoint-initdb.d/init.sql  # file name in docker container should also be changed right?
-      - ./database/initOutboxSettings.sh:/docker-entrypoint-initdb.d/init.sh
-
-
-  doctor-service:
-    build: ./doctor-management/
-    container_name: doctor-service
-    ports:
-      - "8082:8082"
-    networks:
-      - application-backend-network
-    depends_on:
-      - postgres-doctor-db
-
-      
-  postgres-doctor-db:
-    image: postgres:12.3-alpine
-    container_name: doctor-db
-    environment:
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=doctor_db
-    ports:
-      # don't expose ports in production
-      - "8051:5432" # not sure which port should I change or no need to change
-    networks:
-      - application-backend-network
-    volumes:
-      - ./database/Doctor.sql:/docker-entrypoint-initdb.d/init.sql # file name in docker container should also be changed right?
-
-  
-  postgres-diagnosis-db:
-    image: postgres:12.3-alpine
-    container_name: diagnosis-db
-    environment:
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=diagnosis_db
-    ports:
-      # don't expose ports in production
-      - "8052:5432" # not sure which port should I change or no need to change
-    networks:
-      - application-backend-network
-    volumes:
-      - ./database/Diagnosis.sql:/docker-entrypoint-initdb.d/init.sql # file name in docker container should also be changed right?
-
-  feedback-service:
-    image: ed-application/feedback-service:1.0
-    build: ./feedbacks/
-    container_name: feedback-service
-    ports:
-      - "8084:8084"
-    networks:
-      - application-backend-network
-    depends_on:
-      - postgres-feedback-db
-      
-  postgres-feedback-db:
-      image: postgres:12.3-alpine
-      container_name: feedback-db
-      environment:
-        - POSTGRES_DB=feedback_db
-        - POSTGRES_PASSWORD=root
-      ports:
-        # don't expose ports in production
-        - "8053:5432" # not sure which port should I change or no need to change
-      networks:
-        - application-backend-network
-      volumes:
-        - ./database/Feedback.sql:/docker-entrypoint-initdb.d/init.sql # file name in docker container should also be changed right?
-
 
 networks:
   application-backend-network:
