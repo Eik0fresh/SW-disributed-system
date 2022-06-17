@@ -7,12 +7,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class GuidanceDto {
-
-    private Long dia_id;
-    private String guidance;
-    private String priority;
-
+@AllArgsConstructor
+public class DoctorCreateEventDto {
+    private Long id;
+    private String firstname;
+    private String surname;
 }
