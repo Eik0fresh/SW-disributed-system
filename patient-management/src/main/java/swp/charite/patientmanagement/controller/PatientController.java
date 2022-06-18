@@ -26,10 +26,10 @@ public class PatientController {
     @PostMapping(value = "/create")
     public String createPatient(@RequestBody PatientDto patient) {
         Boolean status = patientService.create(patient);
-        if (status == true) {
-            Long p_id = patientService.query(patient);
-            _PatientDto newPatient = new _PatientDto(p_id, patient.getFirstname(), patient.getSurname());
-            diagnosisFeignService.createPatient(newPatient);
+        if (status) {
+            //Long p_id = patientService.query(patient);
+            //_PatientDto newPatient = new _PatientDto(p_id, patient.getFirstname(), patient.getSurname());
+            //diagnosisFeignService.createPatient(newPatient);
             return "Create patient successfully!";
         } else {
             return "Patient exists.";

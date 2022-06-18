@@ -4,15 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import swp.charite.diagnosis.model.Priority;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class GuidanceDto {
-
-    private Long dia_id;
+@AllArgsConstructor
+public class GuidanceCreateEventDto {
+    private Long id;
     private String guidance;
-    private String priority;
-
+    private Priority priority;
+    private String date;
+    private boolean done;
 }
