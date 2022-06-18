@@ -58,7 +58,7 @@ CREATE TABLE feedback_db.guidance (
     g_id      integer  NOT NULL PRIMARY KEY,
     guidance  text     NOT NULL
     -- priority  feedback_db.level   NOT NULL, 
-    -- date      date     NOT NULL,
+    -- date      text    NOT NULL,
     -- done      boolean  NOT NULL
 );
 

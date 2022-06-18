@@ -1,5 +1,6 @@
 package swp.charite.feedbacks.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -7,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import swp.charite.feedbacks.dto.FeedbackDto;
+import swp.charite.feedbacks.dto._Feedback;
 import swp.charite.feedbacks.model.Feedback;
-import swp.charite.feedbacks.model.Guidance;
 import swp.charite.feedbacks.repository.FeedbackRepository;
-import swp.charite.feedbacks.repository.GuidanceRepository;
+
 
 @Service
 public class FeedbackService {
@@ -18,30 +19,22 @@ public class FeedbackService {
     @Autowired
     private FeedbackRepository feedbackRepository;
 
-    @Autowired
-    private GuidanceRepository guidanceRepository;
-
-    public String addFeedback(FeedbackDto feedback) {
+    public void create(FeedbackDto feedback) {
         Date date = new Date();
         Feedback newFeedback = new Feedback(null, feedback.getG_id(), feedback.getFeedback(), date.toString());
         feedbackRepository.save(newFeedback);
-        return "Submit feedback successfully!";
     }
 
-    public List<Feedback> queryFeedback(Long g_id) {
+    public List<_Feedback> query(Long g_id) {
 
-        List<Feedback> feedbacks = feedbackRepository.findByG_id(g_id);
+        List<Feedback> tmp = feedbackRepository.findByG_id(g_id);
+        List<_Feedback> feedbacks = new ArrayList<_Feedback>();
+
+        for (Feedback feedback : tmp) {
+            feedbacks.add(new _Feedback(feedback.getFeedback(), feedback.getDate()));
+        }
 
         return feedbacks;
     }
 
-    public String addGuidance(Guidance guidance) {
-        if (!guidanceRepository.existsById(guidance.getG_id())){
-            Guidance newGuidance = new Guidance(guidance.getG_id(), guidance.getGuidance());
-            guidanceRepository.save(newGuidance);
-            return "Create guidance successfully!";
-        } else {
-            return "Guidance exists!";
-        }
-    }
 }
