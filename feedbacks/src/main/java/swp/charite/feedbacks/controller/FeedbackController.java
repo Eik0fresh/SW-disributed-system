@@ -3,6 +3,8 @@ package swp.charite.feedbacks.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,13 +27,20 @@ public class FeedbackController {
     private GuidanceService guidanceService;
 
     @PostMapping(value = "/feedback/create")
-    public void createFeedback(@RequestBody FeedbackDto feedback) {
-        feedbackService.create(feedback);
+    public ResponseEntity<String> createFeedback(@RequestBody FeedbackDto feedback) {
+        Boolean status = feedbackService.create(feedback);
+        if (status) {
+            return new ResponseEntity<String>("Send feedback successfully!", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>("Invalid guidance ID!", HttpStatus.BAD_REQUEST);
+        }
+        
     }
 
     @GetMapping(value = "/feedback/query/{g_id}")
-    public List<_Feedback> query(@PathVariable("g_id") Long g_id){
-        return feedbackService.query(g_id);
+    public ResponseEntity<List<_Feedback>> query(@PathVariable("g_id") Long g_id){
+        List<_Feedback> feedbacks = feedbackService.query(g_id);
+        return new ResponseEntity<List<_Feedback>>(feedbacks, HttpStatus.OK);
     }
 
     @PostMapping(value = "/guidance/create") 

@@ -11,6 +11,7 @@ import swp.charite.feedbacks.dto.FeedbackDto;
 import swp.charite.feedbacks.dto._Feedback;
 import swp.charite.feedbacks.model.Feedback;
 import swp.charite.feedbacks.repository.FeedbackRepository;
+import swp.charite.feedbacks.repository.GuidanceRepository;
 
 
 @Service
@@ -19,10 +20,19 @@ public class FeedbackService {
     @Autowired
     private FeedbackRepository feedbackRepository;
 
-    public void create(FeedbackDto feedback) {
-        Date date = new Date();
-        Feedback newFeedback = new Feedback(null, feedback.getG_id(), feedback.getFeedback(), date.toString());
-        feedbackRepository.save(newFeedback);
+    @Autowired
+    private GuidanceRepository guidanceRepository;
+
+    public Boolean create(FeedbackDto feedback) {
+        if (guidanceRepository.existsById(feedback.getG_id())) {
+            Date date = new Date();
+            Feedback newFeedback = new Feedback(null, feedback.getG_id(), feedback.getFeedback(), date.toString());
+            feedbackRepository.save(newFeedback);
+            return true;
+        } else {
+            return false;
+        }
+        
     }
 
     public List<_Feedback> query(Long g_id) {
