@@ -12,21 +12,31 @@ public class DiagnosisService {
     @Autowired
     private DiagnosisRepository diagnosisRepository;
 
-    public String addDiagnosis(Diagnosis diagnosis) {
-        if (!diagnosisRepository.existsById(diagnosis.getDia_id())){
+    public Boolean create(Diagnosis diagnosis) {
+        if (!diagnosisRepository.existsById(diagnosis.getDiagnosisId())){
             diagnosisRepository.save(diagnosis);
-            return "Create diagnosis successfully!";
+            return true;
         } else {
-            return "Diagnosis exists!";
+            return false;
         }
     }
 
-    public Long findDiagnosis(Long p_id) {
+    public Long findByPatient(Long p_id) {
         if (diagnosisRepository.existsByPatientId(p_id)) {
             Diagnosis diagnosis = diagnosisRepository.findByPatientId(p_id);
-            return diagnosis.getDia_id();
+            return diagnosis.getDiagnosisId();
         } else {
             return null;
         }
     }
+
+    public Long findByDoctor(Long d_id) {
+        if (diagnosisRepository.existsByDoctorId(d_id)) {
+            Diagnosis diagnosis = diagnosisRepository.findByDoctorId(d_id);
+            return diagnosis.getDiagnosisId();
+        } else {
+            return null;
+        }
+    }
+
 }

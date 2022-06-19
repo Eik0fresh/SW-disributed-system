@@ -5,7 +5,9 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import swp.charite.diagnosis.dto.GuidanceDto;
+
+import swp.charite.diagnosis.dto.GuidanceFromDoctor;
+import swp.charite.diagnosis.dto.GuidanceToPatient;
 import swp.charite.diagnosis.model.Guidance;
 import swp.charite.diagnosis.repository.GuidanceRepository;
 
@@ -15,21 +17,23 @@ public class GuidanceService {
     @Autowired
     private GuidanceRepository guidanceRepository;
 
-    public String create(GuidanceDto guidance) {
-        if (!guidanceRepository.existsByDiaId(guidance.getDia_id())){
+    public Boolean create(GuidanceFromDoctor guidance) {
+        
+        if (!guidanceRepository.existsByDiagnosisId(guidance.getDia_id())){
             Date date = new Date();
             Guidance newGuidance = new Guidance(null, guidance.getDia_id(), guidance.getGuidance(),
                 guidance.getPriority(), date.toString(), false);
             guidanceRepository.save(newGuidance);
-            return "Create guidance successfully!";
+            return true;
         } else {
-            return "Guidance exists!";
+            return false;
         }
     }
 
-    public Guidance query(Long dia_id) {
-        if (guidanceRepository.existsByDiaId(dia_id)){
-            return guidanceRepository.findByDiaId(dia_id);
+    public GuidanceToPatient query(Long dia_id) {
+        if (guidanceRepository.existsByDiagnosisId(dia_id)){
+            Guidance guidance = guidanceRepository.findByDiagnosisId(dia_id);
+            return new GuidanceToPatient(guidance.getGuidance(), guidance.getPriority(), guidance.getDone());
         } else {
             return null;
         }

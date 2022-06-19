@@ -12,19 +12,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "diagnosis", schema = "diagnosis_db")
+@Table(name = "doctor", schema = "diagnosis_db")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Diagnosis {
+public class Doctor {
     @Id
-    @Column(name = "dia_id", nullable = false)
-    private Long diagnosisId;
-
-    @Column(name = "p_id", nullable = false)
-    private Long patientId;
-
     @Column(name = "d_id", nullable = false)
-    private Long doctorId;
+    private Long d_id;
+
+    @Column(name = "firstname", nullable = false)
+    private String firstname;
+
+    @Column(name = "surname", nullable = false)
+    private String surname;
 }
