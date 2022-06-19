@@ -1,6 +1,8 @@
 package swp.charite.patientmanagement.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,9 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import swp.charite.patientmanagement.dto.EmailDto;
 import swp.charite.patientmanagement.dto.PatientDto;
-import swp.charite.patientmanagement.dto._PatientDto;
-import swp.charite.patientmanagement.service.DiagnosisFeignService;
 import swp.charite.patientmanagement.service.PatientService;
 
 @RestController
@@ -20,40 +21,43 @@ public class PatientController {
     @Autowired
     private PatientService patientService;
 
-    @Autowired
-    private DiagnosisFeignService diagnosisFeignService;
-
     @PostMapping(value = "/create")
-    public String createPatient(@RequestBody PatientDto patient) {
+    public ResponseEntity<String> createPatient(@RequestBody PatientDto patient) {
         Boolean status = patientService.create(patient);
         if (status) {
-            //Long p_id = patientService.query(patient);
-            //_PatientDto newPatient = new _PatientDto(p_id, patient.getFirstname(), patient.getSurname());
-            //diagnosisFeignService.createPatient(newPatient);
-            return "Create patient successfully!";
+            return new ResponseEntity<String>("Create patient successfully!", HttpStatus.OK);
         } else {
-            return "Patient exists.";
+            return new ResponseEntity<String>("Patient exists!", HttpStatus.BAD_REQUEST);
         } 
     }
 
     @PostMapping(value = "/update")
-    public String updateEmail(@RequestBody PatientDto patient) {
-        return patientService.update(patient);
+    public ResponseEntity<String> updateEmail(@RequestBody EmailDto email) {
+        Boolean status = patientService.update(email);
+        if (status) {
+            return new ResponseEntity<String>("Update email successfully!", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>("Invalid Patient ID!", HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @PostMapping(value = "/query")
-    public Long queryPatient(@RequestBody PatientDto patient) {
-        return patientService.query(patient);
+    @GetMapping(value = "/query/{id}")
+    public ResponseEntity<PatientDto> queryPatient(@PathVariable("id") Long p_id) {
+        PatientDto patient = patientService.query(p_id);
+        if (patient != null) {
+            return new ResponseEntity<PatientDto>(patient, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<PatientDto>(patient, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping(value = "/delete/{id}")
-    public String deletePatient(@PathVariable("id") Long id) {
+    public ResponseEntity<String> deletePatient(@PathVariable("id") Long id) {
         Boolean status = patientService.delete(id);
         if (status == true) {
-            diagnosisFeignService.deletePatient(id);
-            return "Delete patient successfully!";
+            return new ResponseEntity<String>("Delete patient successfully!", HttpStatus.OK);
         } else {
-            return "Invalid patient ID";
+            return new ResponseEntity<String>("Invalid patient ID", HttpStatus.BAD_REQUEST);
         }
     }
     

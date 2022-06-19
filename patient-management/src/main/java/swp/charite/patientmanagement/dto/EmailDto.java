@@ -7,10 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class _PatientDto {
+@NoArgsConstructor
+public class EmailDto {
     private Long p_id;
-    private String firstname;
-    private String surname;
+    private String email;
 }
