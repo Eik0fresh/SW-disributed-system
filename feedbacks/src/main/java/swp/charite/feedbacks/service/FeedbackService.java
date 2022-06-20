@@ -46,5 +46,15 @@ public class FeedbackService {
 
         return feedbacks;
     }
-
+  
+    public String addGuidance(Guidance guidance) {
+        /*if (!guidanceRepository.existsById(guidance.getG_id())){
+            Guidance newGuidance = new Guidance(guidance.getG_id(), guidance.getGuidance());
+            guidanceRepository.save(newGuidance);
+            return "Create guidance successfully!";
+        } else {
+            return "Guidance exists!";
+        }*/
+        return "Hi";
+    }
 }

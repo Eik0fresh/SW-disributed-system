@@ -1,9 +1,6 @@
 package swp.charite.feedbacks.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,11 +14,22 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Guidance {
+
     @Id
     @Column(name = "g_id", nullable = false)
     private Long g_id;
 
     @Column(name = "guidance", nullable = false)
     private String guidance;
+
+    @Column(name = "priority", nullable = false)
+    @Enumerated
+    private Priority priority;
+
+    @Column(name = "date", nullable = false)
+    private String date;
+
+    @Column(name = "done", nullable = false)
+    private boolean done;
 
 }

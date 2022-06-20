@@ -20,7 +20,7 @@ import lombok.Setter;
 public class Diagnosis {
     @Id
     @Column(name = "dia_id", nullable = false)
-    private Long dia_id;
+    private Long diagnosisId;
 
     @Column(name = "p_id", nullable = false)
     private Long patientId;

@@ -1,4 +1,4 @@
-package swp.charite.patientmanagement.dto;
+package swp.charite.feedbacks.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class _PatientDto {
-    private Long p_id;
-    private String firstname;
-    private String surname;
+public class MarkGuidanceDto {
+    private Long id;
+    private boolean done;
 }

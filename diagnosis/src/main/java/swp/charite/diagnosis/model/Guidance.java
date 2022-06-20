@@ -1,11 +1,6 @@
 package swp.charite.diagnosis.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 import lombok.AllArgsConstructor;
@@ -26,13 +21,14 @@ public class Guidance {
     private Long guidanceId;
 
     @Column(name = "dia_id", nullable = false)
-    private Long diaId;
+    private Long diagnosisId;
 
     @Column(name = "guidance", nullable = false)
     private String guidance;
 
     @Column(name = "priority", nullable = false)
-    private String priority;
+    @Enumerated(EnumType.STRING)
+    private Priority priority;
 
     @Column(name = "date", nullable = false)
     private String date;
