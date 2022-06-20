@@ -7,8 +7,12 @@ import swp.charite.diagnosis.model.Diagnosis;
 
 @Repository
 public interface DiagnosisRepository extends JpaRepository<Diagnosis, Long>{
-    
-    public Diagnosis findByPatientId(Long p_id);
 
     public Boolean existsByPatientId(Long p_id);
+
+    public Boolean existsByDoctorId(Long d_id);
+
+    public Diagnosis findByPatientId(Long p_id);
+
+    public Diagnosis findByDoctorId(Long d_id);
 }

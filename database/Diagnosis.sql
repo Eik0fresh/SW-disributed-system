@@ -25,9 +25,17 @@ CREATE TABLE diagnosis_db.patient (
 CREATE TABLE diagnosis_db.doctor (
     d_id      integer NOT NULL PRIMARY KEY,
     firstname text    NOT NULL,
+<<<<<<< HEAD
+    surname   text    NOT NULL,   
+    UNIQUE (firstname, surname)
+);
+
+-- CREATE TYPE diagnosis_db.level AS ENUM ('very urgent', 'urgent', 'normal');
+=======
     surname   text    NOT NULL,
     UNIQUE (firstname, surname)
 );
+>>>>>>> ed-application
 
 CREATE TABLE diagnosis_db.guidance (
     g_id      integer  NOT NULL PRIMARY KEY,
@@ -49,7 +57,10 @@ ALTER TABLE diagnosis_db.guidance ALTER COLUMN g_id ADD GENERATED ALWAYS AS IDEN
 
 CREATE TABLE diagnosis_db.diagnosis (
     dia_id  integer NOT NULL PRIMARY KEY,
+<<<<<<< HEAD
+=======
     g_id    integer NOT NULL,
+>>>>>>> ed-application
     p_id    integer NOT NULL,
     d_id    integer NOT NULL
 );

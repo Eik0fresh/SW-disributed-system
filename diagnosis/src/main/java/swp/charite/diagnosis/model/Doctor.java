@@ -11,8 +11,8 @@ import javax.persistence.*;
 @Table(name = "doctor", schema = "diagnosis_db")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Doctor {
     @Id
     @Column(name = "d_id", nullable = false)
@@ -23,6 +23,5 @@ public class Doctor {
 
     @Column(name = "surname", nullable = false)
     private String surname;
-    
 
 }

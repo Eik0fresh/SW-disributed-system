@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GuidanceDto {
+public class GuidanceFromDoctor {
 
     private Long dia_id;
     private String guidance;

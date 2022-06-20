@@ -21,7 +21,7 @@ public class Guidance {
     private Long guidanceId;
 
     @Column(name = "dia_id", nullable = false)
-    private Long diaId;
+    private Long diagnosisId;
 
     @Column(name = "guidance", nullable = false)
     private String guidance;
