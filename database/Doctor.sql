@@ -17,7 +17,6 @@ CREATE TABLE doctor_db.doctor (
     d_id      integer NOT NULL PRIMARY KEY,
     firstname text    NOT NULL,
     surname   text    NOT NULL,
-    gender    varchar NOT NULL,
     email     text    NOT NULL,    
     UNIQUE (firstname, surname)
 );
@@ -31,6 +30,23 @@ ALTER TABLE doctor_db.doctor ALTER COLUMN d_id ADD GENERATED ALWAYS AS IDENTITY 
     CACHE 1
 );
 
+--CREATE TABLE doctor_db.city (
+--    city_id     integer NOT NULL PRIMARY KEY,
+--    city        text    NOT NULL
+--);
+
+--CREATE TABLE doctor_db.center (
+--    c_id      integer NOT NULL PRIMARY KEY,
+--    name      text    NOT NULL,
+--    street    text    NOT NULL,
+--    postcode  integer NOT NULL,
+--    city_id   integer NOT NULL
+--);
+
+--ALTER TABLE ONLY doctor_db.center
+--    ADD CONSTRAINT center_city_id_fkey FOREIGN KEY (city_id) REFERENCES doctor_db.city(city_id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- Old; Maybe approach above better (location is unspecific)
 CREATE TABLE doctor_db.center (
     c_id      integer NOT NULL PRIMARY KEY,
     name      text    NOT NULL,
@@ -65,3 +81,35 @@ ALTER TABLE ONLY doctor_db.work
     ADD CONSTRAINT work_d_id_fkey FOREIGN KEY (d_id) REFERENCES doctor_db.doctor(d_id) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE ONLY doctor_db.work
     ADD CONSTRAINT work_c_id_fkey FOREIGN KEY (c_id) REFERENCES doctor_db.center(c_id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+CREATE TABLE doctor_db.outbox (
+    id UUID NOT NULL PRIMARY KEY,
+    aggregate_type text NOT NULL,
+    aggregate_id text NOT NULL,
+    type text NOT NULL,
+    payload text NOT NULL
+);
+
+ALTER TABLE doctor_db.outbox OWNER TO postgres;
+
+-- Real data
+INSERT INTO doctor_db.center ("name", "location") VALUES
+    ('Charité Campus Virchow-Klinikum', 'Augustenburger Platz 1'),
+    ('Charité Campus Benjamin-Franklin', 'Hindenburgdamm 30'),
+    ('Charite Campus Mitte', 'Philippstraße 10');
+--INSERT INTO doctor_db.city (city_id, city) VALUES (1, 'Berlin');
+
+--INSERT INTO doctor_db.center ("name", "street", "postcode", "city_id") VALUES
+--    ('Charité Campus Virchow-Klinikum', 'Augustenburger Platz 1', 13353, 1),
+--    ('Charité Campus Benjamin-Franklin', 'Hindenburgdamm 30', 12203, 1),
+--    ('Charite Campus Mitte', 'Philippstraße 10', 10117, 1);
+
+-- Test data
+INSERT INTO doctor_db.doctor (firstname, surname, email)
+VALUES  ('Max', 'Mustermann', 'Max@Muster.com'),
+         ('Andrea', 'Musterfrau', 'Andrea@Muster.com'),
+         ('Anton','Mustermann','Anton@Muster.com'),
+         ('Tina','Musterfrau','Tina@Muster.com');
+
+
+INSERT INTO doctor_db.work (d_id, c_id)values (0,0), (0,1),(1,0),(2,0), (3,1);

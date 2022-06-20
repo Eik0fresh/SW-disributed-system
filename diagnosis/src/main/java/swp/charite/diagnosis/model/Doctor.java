@@ -1,15 +1,11 @@
 package swp.charite.diagnosis.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "doctor", schema = "diagnosis_db")
@@ -27,4 +23,5 @@ public class Doctor {
 
     @Column(name = "surname", nullable = false)
     private String surname;
+
 }

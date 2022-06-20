@@ -12,9 +12,7 @@ import lombok.Setter;
 public class GuidanceFromDoctor {
 
     private Long dia_id;
-
     private String guidance;
-
     private String priority;
 
 }

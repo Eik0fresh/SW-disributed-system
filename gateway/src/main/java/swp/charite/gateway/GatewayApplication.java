@@ -25,6 +25,9 @@ public class GatewayApplication {
         return builder.routes()
                 .route("simple", p -> p.path("/demo/**").uri("lb://demo"))
                 .route("patient", p -> p.path("/patient/**").uri("lb://patient-service"))
+                .route("diagnosis", p -> p.path("/diagnosis/**").uri("lb://diagnosis-service"))
+                .route("feedback", p -> p.path("/feedback/**").uri("lb://feedback-service"))
+                .route("doctor", p -> p.path("/doctor/**").uri("lb://doctor-service"))
                 .build();
     }
 
