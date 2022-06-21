@@ -29,7 +29,7 @@ public class GuidanceCommandService {
 
     @Transactional
     public void handleAddedGuidance(JsonNode guidanceData) throws JsonProcessingException {
-        GuidanceCreateEventDto guidanceCreateEventDto = mapper.treeToValue(guidanceData, GuidanceCreateEventDto.class);
+        GuidanceCreateEventDto guidanceCreateEventDto = mapper.treeToValue(mapper.readTree(guidanceData.asText()), GuidanceCreateEventDto.class);
         if (!guidanceRepository.existsById(guidanceCreateEventDto.getId())) {
             Guidance guidance = new Guidance(guidanceCreateEventDto.getId(), guidanceCreateEventDto.getGuidance(),
                     guidanceCreateEventDto.getPriority(), guidanceCreateEventDto.getDate(), guidanceCreateEventDto.isDone());

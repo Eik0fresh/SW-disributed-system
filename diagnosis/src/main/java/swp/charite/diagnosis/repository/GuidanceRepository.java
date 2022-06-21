@@ -1,14 +1,13 @@
 package swp.charite.diagnosis.repository;
 
-
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
+import org.springframework.stereotype.Repository;
 import swp.charite.diagnosis.model.Guidance;
 
 @Repository
 public interface GuidanceRepository extends JpaRepository<Guidance, Long> {
-    
+
     public Boolean existsByDiagnosisId(Long dia_id);
 
     public Guidance findByDiagnosisId(Long dia_id); 

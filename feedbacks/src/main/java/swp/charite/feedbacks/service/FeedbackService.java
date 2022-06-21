@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import swp.charite.feedbacks.dto.FeedbackDto;
 import swp.charite.feedbacks.dto._Feedback;
 import swp.charite.feedbacks.model.Feedback;
+import swp.charite.feedbacks.model.Guidance;
 import swp.charite.feedbacks.repository.FeedbackRepository;
 import swp.charite.feedbacks.repository.GuidanceRepository;
 

@@ -33,7 +33,7 @@ public class GuidanceService {
         if (!guidanceRepository.existsByDiagnosisId(guidance.getDia_id())) {
             Date date = new Date();
             Guidance newGuidance = new Guidance(null, guidance.getDia_id(), guidance.getGuidance(),
-                Priority.valueOf(guidance.getPriority()), date.toString(), false);
+                guidance.getPriority(), date.toString(), false);
             guidanceRepository.save(newGuidance);
 
             GuidanceCreateEventDto guidanceCreateEventDto = new GuidanceCreateEventDto(newGuidance.getGuidanceId(),

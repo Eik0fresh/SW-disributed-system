@@ -13,24 +13,15 @@ CREATE SCHEMA feedback_db;
 
 SET default_table_access_method = heap;
 
-CREATE TYPE feedback_db.priority AS ENUM ('very urgent', 'urgent', 'normal');
+CREATE TYPE feedback_db.priority AS ENUM ('Normal', 'Urgent', 'VeryUrgent');
 CREATE TYPE feedback_db.choice AS ENUM ('multipleChoice', 'checkbox');
 
 CREATE TABLE feedback_db.guidance (
     g_id      integer  NOT NULL PRIMARY KEY,
     guidance  text     NOT NULL,
-    priority  feedback_db.priority   NOT NULL,
+    priority  text     NOT NULL,--feedback_db.priority   NOT NULL,
     date      text     NOT NULL,
     done      boolean  NOT NULL
-);
-
-ALTER TABLE feedback_db.guidance ALTER COLUMN g_id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME feedback_db.guidance_g_id
-    START WITH 0
-    INCREMENT BY 1
-    MINVALUE 0
-    NO MAXVALUE
-    CACHE 1
 );
 
 CREATE TABLE feedback_db.feedback (

@@ -22,6 +22,9 @@ public class Diagnosis {
     @Column(name = "dia_id", nullable = false)
     private Long diagnosisId;
 
+    /*@Column(name = "g_id", nullable = false)
+    private Long guidanceId;*/
+
     @Column(name = "p_id", nullable = false)
     private Long patientId;
 
