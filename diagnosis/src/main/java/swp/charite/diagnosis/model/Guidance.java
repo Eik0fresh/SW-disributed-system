@@ -2,7 +2,6 @@ package swp.charite.diagnosis.model;
 
 import javax.persistence.*;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +26,7 @@ public class Guidance {
     private String guidance;
 
     @Column(name = "priority", nullable = false)
-    @Enumerated(EnumType.STRING)
+    @Enumerated
     private Priority priority;
 
     @Column(name = "date", nullable = false)

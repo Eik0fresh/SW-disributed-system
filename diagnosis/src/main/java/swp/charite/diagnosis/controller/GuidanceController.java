@@ -10,8 +10,8 @@ import swp.charite.diagnosis.dto.GuidanceToPatient;
 import swp.charite.diagnosis.service.DiagnosisService;
 import swp.charite.diagnosis.service.GuidanceService;
 
-@Controller
-@RequestMapping(value = "diagnosis")
+@RestController
+@RequestMapping("/diagnosis")
 public class GuidanceController {
 
     @Autowired

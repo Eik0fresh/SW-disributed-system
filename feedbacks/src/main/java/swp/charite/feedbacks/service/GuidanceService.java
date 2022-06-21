@@ -14,8 +14,8 @@ public class GuidanceService {
 
     public void create(Guidance guidance) {
         if (!guidanceRepository.existsById(guidance.getG_id())){
-            Guidance newGuidance = new Guidance(guidance.getG_id(), guidance.getGuidance());
-            guidanceRepository.save(newGuidance);
+            //Guidance newGuidance = new Guidance(guidance.getG_id(), guidance.getGuidance());
+            //guidanceRepository.save(newGuidance);
         } 
     }
 

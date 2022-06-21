@@ -15,6 +15,8 @@ public class FeedbacksApplication {
     }
 
     @Bean
-    public ObjectMapper mapper() {return new ObjectMapper();}
+    public ObjectMapper mapper() {
+        return new ObjectMapper();
+    }
 
 }
