@@ -41,13 +41,13 @@ public class GuidanceCommandService {
         if (guidanceRepository.existsById(id)) {
             Guidance guidance = guidanceRepository.getReferenceById(id);
             guidance.setDone(true);
-
+            
             MarkGuidanceDto markGuidanceDto = new MarkGuidanceDto(id, true);
             JsonNode jsonNode = mapper.convertValue(markGuidanceDto, JsonNode.class);
             OutboxEntity o = new OutboxEntity(UUID.randomUUID(), "guidance", guidance.getG_id().toString(), "guidance_done", jsonNode.toString());
             outboxRepository.save(o);
             outboxRepository.delete(o);
-
+            
             return guidance.isDone();
         }
         return false;

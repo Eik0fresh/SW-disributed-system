@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import swp.charite.patientmanagement.dto.EmailDto;
+import swp.charite.patientmanagement.dto.PatientUpdateEmailDto;
 import swp.charite.patientmanagement.dto.PatientDto;
 import swp.charite.patientmanagement.service.PatientService;
 
@@ -32,7 +32,7 @@ public class PatientController {
     }
 
     @PostMapping(value = "/update")
-    public ResponseEntity<String> updateEmail(@RequestBody EmailDto email) {
+    public ResponseEntity<String> updateEmail(@RequestBody PatientUpdateEmailDto email) {
         Boolean status = patientService.update(email);
         if (status) {
             return new ResponseEntity<String>("Update email successfully!", HttpStatus.OK);

@@ -19,7 +19,7 @@ CREATE TYPE feedback_db.choice AS ENUM ('multipleChoice', 'checkbox');
 CREATE TABLE feedback_db.guidance (
     g_id      integer  NOT NULL PRIMARY KEY,
     guidance  text     NOT NULL,
-    priority  text     NOT NULL,--feedback_db.priority   NOT NULL,
+    priority  text     NOT NULL,
     date      text     NOT NULL,
     done      boolean  NOT NULL
 );
@@ -47,7 +47,7 @@ CREATE TABLE feedback_db.question (
     q_id     integer NOT NULL PRIMARY KEY,
     a_id     integer NOT NULL,
     question text    NOT NULL,
-    format   feedback_db.choice  NOT NULL  -- data type need to be double checked
+    format   text    NOT NULL  
 );
 
 ALTER TABLE feedback_db.question ALTER COLUMN q_id ADD GENERATED ALWAYS AS IDENTITY (

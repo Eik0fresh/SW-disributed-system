@@ -11,11 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import swp.charite.feedbacks.dto.FeedbackDto;
-import swp.charite.feedbacks.dto._Feedback;
-import swp.charite.feedbacks.model.Guidance;
+import swp.charite.feedbacks.dto.SendFeedbackDto;
+import swp.charite.feedbacks.dto.GetFeedbackDto;
 import swp.charite.feedbacks.service.FeedbackService;
-import swp.charite.feedbacks.service.GuidanceService;
 
 @RestController
 public class FeedbackController {
@@ -23,11 +21,8 @@ public class FeedbackController {
     @Autowired
     private FeedbackService feedbackService;
 
-    @Autowired
-    private GuidanceService guidanceService;
-
     @PostMapping(value = "/feedback/create")
-    public ResponseEntity<String> createFeedback(@RequestBody FeedbackDto feedback) {
+    public ResponseEntity<String> createFeedback(@RequestBody SendFeedbackDto feedback) {
         Boolean status = feedbackService.create(feedback);
         if (status) {
             return new ResponseEntity<String>("Send feedback successfully!", HttpStatus.OK);
@@ -38,13 +33,9 @@ public class FeedbackController {
     }
 
     @GetMapping(value = "/feedback/query/{g_id}")
-    public ResponseEntity<List<_Feedback>> query(@PathVariable("g_id") Long g_id){
-        List<_Feedback> feedbacks = feedbackService.query(g_id);
-        return new ResponseEntity<List<_Feedback>>(feedbacks, HttpStatus.OK);
+    public ResponseEntity<List<GetFeedbackDto>> query(@PathVariable("g_id") Long g_id){
+        List<GetFeedbackDto> feedbacks = feedbackService.query(g_id);
+        return new ResponseEntity<List<GetFeedbackDto>>(feedbacks, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/guidance/create") 
-    public void createGuidance(@RequestBody Guidance guidance) {
-        guidanceService.create(guidance);
-    }
 }

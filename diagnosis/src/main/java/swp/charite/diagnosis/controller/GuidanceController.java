@@ -3,7 +3,6 @@ package swp.charite.diagnosis.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import swp.charite.diagnosis.dto.GuidanceFromDoctor;
 import swp.charite.diagnosis.dto.GuidanceToPatient;
@@ -35,12 +34,6 @@ public class GuidanceController {
         Long dia_id = diagnosisService.findByPatient(p_id);
         GuidanceToPatient guidance = guidanceService.query(dia_id);
         return new ResponseEntity<GuidanceToPatient>(guidance, HttpStatus.OK);
-    }
-
-    @GetMapping(value = "guidance/update/{g_id}")
-    public ResponseEntity<String> doneGuidance(@PathVariable("g_id") Long g_id) {
-        guidanceService.update(g_id);
-        return new ResponseEntity<String>("Guidance done!", HttpStatus.OK);
     }
 
 }

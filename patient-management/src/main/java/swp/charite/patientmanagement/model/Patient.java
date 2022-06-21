@@ -33,12 +33,5 @@ public class Patient {
 
     @Column(name = "email", nullable = false)
     private String email;
-    
-    // @Column(name = "gender", nullable = false)
-    // private char gender;
-
-    // @Column(name = "birthday", nullable = false)
-    // private String birthday;
-
 
 }

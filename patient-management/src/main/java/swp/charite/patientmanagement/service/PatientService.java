@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import swp.charite.patientmanagement.dto.EmailDto;
+import swp.charite.patientmanagement.dto.PatientUpdateEmailDto;
 import swp.charite.patientmanagement.dto.PatientCreateEventDto;
 import swp.charite.patientmanagement.dto.PatientDto;
 import swp.charite.patientmanagement.model.OutboxEntity;
@@ -49,7 +49,7 @@ public class PatientService {
         }
     }
 
-    public Boolean update(EmailDto patient) {
+    public Boolean update(PatientUpdateEmailDto patient) {
         if (!patientRepository.existsById(patient.getP_id())) {
             return false;
         } else {
