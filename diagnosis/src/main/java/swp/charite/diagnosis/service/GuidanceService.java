@@ -30,9 +30,8 @@ public class GuidanceService {
 
     public Boolean create(GuidanceFromDoctor guidance) {
         if (!guidanceRepository.existsByDiagnosisId(guidance.getDia_id())) {
-            Date date = new Date();
             Guidance newGuidance = new Guidance(null, guidance.getDia_id(), guidance.getGuidance(),
-                guidance.getPriority(), date.toString(), false);
+                guidance.getPriority(), new Date(), false);
             guidanceRepository.save(newGuidance);
 
             GuidanceCreateEventDto guidanceCreateEventDto = new GuidanceCreateEventDto(newGuidance.getGuidanceId(),

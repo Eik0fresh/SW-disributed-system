@@ -20,7 +20,7 @@ CREATE TABLE feedback_db.guidance (
     g_id      integer  NOT NULL PRIMARY KEY,
     guidance  text     NOT NULL,
     priority  text     NOT NULL,
-    date      text     NOT NULL,
+    date      timestamp     NOT NULL,
     done      boolean  NOT NULL
 );
 
@@ -28,7 +28,7 @@ CREATE TABLE feedback_db.feedback (
     f_id     integer NOT NULL PRIMARY KEY,
     g_id     integer NOT NULL,
     feedback text    NOT NULL,
-    date     text    NOT NULL
+    date     timestamp    NOT NULL
 );
 
 ALTER TABLE feedback_db.feedback ALTER COLUMN f_id ADD GENERATED ALWAYS AS IDENTITY (
@@ -63,7 +63,7 @@ CREATE TABLE feedback_db.answer (
     a_id    integer NOT NULL PRIMARY KEY,
     q_id    integer NOT NULL,
     answer  text    NOT NULL,
-    date     date    NOT NULL
+    date    timestamp    NOT NULL
 );
 
 ALTER TABLE feedback_db.answer ALTER COLUMN a_id ADD GENERATED ALWAYS AS IDENTITY (

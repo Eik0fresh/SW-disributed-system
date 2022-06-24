@@ -25,8 +25,7 @@ public class FeedbackService {
 
     public Boolean create(SendFeedbackDto feedback) {
         if (guidanceRepository.existsById(feedback.getG_id())) {
-            Date date = new Date();
-            Feedback newFeedback = new Feedback(null, feedback.getG_id(), feedback.getFeedback(), date.toString());
+            Feedback newFeedback = new Feedback(null, feedback.getG_id(), feedback.getFeedback(), new Date());
             feedbackRepository.save(newFeedback);
             return true;
         } else {
@@ -37,10 +36,10 @@ public class FeedbackService {
 
     public List<GetFeedbackDto> query(Long g_id) {
     
-        List<Feedback> tmp = feedbackRepository.findByG_id(g_id);
+        List<Feedback> fb_list = feedbackRepository.findByG_id(g_id);
         List<GetFeedbackDto> feedbacks = new ArrayList<GetFeedbackDto>();
 
-        for (Feedback feedback : tmp) {
+        for (Feedback feedback : fb_list) {
             feedbacks.add(new GetFeedbackDto(feedback.getFeedback(), feedback.getDate()));
         }
 
