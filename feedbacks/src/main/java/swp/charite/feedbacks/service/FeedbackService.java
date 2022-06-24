@@ -7,10 +7,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import swp.charite.feedbacks.dto.FeedbackDto;
-import swp.charite.feedbacks.dto._Feedback;
+import swp.charite.feedbacks.dto.SendFeedbackDto;
+import swp.charite.feedbacks.dto.GetFeedbackDto;
 import swp.charite.feedbacks.model.Feedback;
-import swp.charite.feedbacks.model.Guidance;
 import swp.charite.feedbacks.repository.FeedbackRepository;
 import swp.charite.feedbacks.repository.GuidanceRepository;
 
@@ -24,10 +23,9 @@ public class FeedbackService {
     @Autowired
     private GuidanceRepository guidanceRepository;
 
-    public Boolean create(FeedbackDto feedback) {
+    public Boolean create(SendFeedbackDto feedback) {
         if (guidanceRepository.existsById(feedback.getG_id())) {
-            Date date = new Date();
-            Feedback newFeedback = new Feedback(null, feedback.getG_id(), feedback.getFeedback(), date.toString());
+            Feedback newFeedback = new Feedback(null, feedback.getG_id(), feedback.getFeedback(), new Date());
             feedbackRepository.save(newFeedback);
             return true;
         } else {
@@ -36,26 +34,17 @@ public class FeedbackService {
         
     }
 
-    public List<_Feedback> query(Long g_id) {
+    public List<GetFeedbackDto> query(Long g_id) {
+    
+        List<Feedback> fb_list = feedbackRepository.findByG_id(g_id);
+        List<GetFeedbackDto> feedbacks = new ArrayList<GetFeedbackDto>();
 
-        List<Feedback> tmp = feedbackRepository.findByG_id(g_id);
-        List<_Feedback> feedbacks = new ArrayList<_Feedback>();
-
-        for (Feedback feedback : tmp) {
-            feedbacks.add(new _Feedback(feedback.getFeedback(), feedback.getDate()));
+        for (Feedback feedback : fb_list) {
+            feedbacks.add(new GetFeedbackDto(feedback.getFeedback(), feedback.getDate()));
         }
 
         return feedbacks;
     }
   
-    public String addGuidance(Guidance guidance) {
-        /*if (!guidanceRepository.existsById(guidance.getG_id())){
-            Guidance newGuidance = new Guidance(guidance.getG_id(), guidance.getGuidance());
-            guidanceRepository.save(newGuidance);
-            return "Create guidance successfully!";
-        } else {
-            return "Guidance exists!";
-        }*/
-        return "Hi";
-    }
+
 }

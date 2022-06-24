@@ -13,5 +13,4 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
 
     @Query(value = "select * from feedback_db.feedback f where f.g_id=?1", nativeQuery = true)
     public List<Feedback> findByG_id(Long g_id);
-
 }

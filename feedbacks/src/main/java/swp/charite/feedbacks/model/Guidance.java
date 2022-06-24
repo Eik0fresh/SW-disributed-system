@@ -1,5 +1,7 @@
 package swp.charite.feedbacks.model;
 
+import java.util.Date;
+
 import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
@@ -27,7 +29,7 @@ public class Guidance {
     private Priority priority;
 
     @Column(name = "date", nullable = false)
-    private String date;
+    private Date date;
 
     @Column(name = "done", nullable = false)
     private boolean done;

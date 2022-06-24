@@ -29,4 +29,11 @@ public class DoctorCommandService {
         }
     }
 
+    // TO-DO
+    public void delete(Long id) {
+        if (doctorRepository.existsById(id)) {
+            doctorRepository.deleteById(id);
+        }
+    }
+
 }

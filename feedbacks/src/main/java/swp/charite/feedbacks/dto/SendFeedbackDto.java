@@ -1,4 +1,5 @@
-package swp.charite.diagnosis.dto;
+package swp.charite.feedbacks.dto;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,9 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DoctorDto {
-    
-    private String firstname;
-    private String surname;
-    
+public class SendFeedbackDto {
+    private Long g_id;
+    private String feedback;
 }

@@ -13,7 +13,6 @@ import swp.charite.diagnosis.dto.GuidanceToPatient;
 import swp.charite.diagnosis.dto.GuidanceCreateEventDto;
 import swp.charite.diagnosis.model.Guidance;
 import swp.charite.diagnosis.model.OutboxEntity;
-import swp.charite.diagnosis.model.Priority;
 import swp.charite.diagnosis.repository.GuidanceRepository;
 import swp.charite.diagnosis.repository.OutboxRepository;
 
@@ -31,9 +30,8 @@ public class GuidanceService {
 
     public Boolean create(GuidanceFromDoctor guidance) {
         if (!guidanceRepository.existsByDiagnosisId(guidance.getDia_id())) {
-            Date date = new Date();
             Guidance newGuidance = new Guidance(null, guidance.getDia_id(), guidance.getGuidance(),
-                guidance.getPriority(), date.toString(), false);
+                guidance.getPriority(), new Date(), false);
             guidanceRepository.save(newGuidance);
 
             GuidanceCreateEventDto guidanceCreateEventDto = new GuidanceCreateEventDto(newGuidance.getGuidanceId(),
@@ -58,12 +56,4 @@ public class GuidanceService {
         }
     }
 
-    public void update(Long g_id) {
-        if (guidanceRepository.existsById(g_id)) {
-            Date date = new Date();
-            Guidance oldGuidance = guidanceRepository.findByGuidanceId(g_id);
-            oldGuidance.setDate(date.toString());
-            oldGuidance.setDone(true);
-        }
-    }
 }

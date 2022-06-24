@@ -6,13 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
-import swp.charite.diagnosis.dto.DoctorCreateEventDto;
 import swp.charite.diagnosis.service.DoctorCommandService;
 import swp.charite.diagnosis.service.GuidanceCommandService;
 import swp.charite.diagnosis.service.PatientCommandService;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 @Component
 public class KafkaApplicationConsumer {

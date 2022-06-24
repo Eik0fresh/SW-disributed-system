@@ -1,5 +1,7 @@
 package swp.charite.diagnosis.dto;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +16,6 @@ public class GuidanceCreateEventDto {
     private Long id;
     private String guidance;
     private Priority priority;
-    private String date;
+    private Date date;
     private boolean done;
 }

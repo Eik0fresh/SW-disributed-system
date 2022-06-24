@@ -28,4 +28,11 @@ public class PatientCommandService {
             patientRepository.save(patient);
         }
     }
+
+    // TO-DO
+    public void delete(Long id) {
+        if (patientRepository.existsById(id)) {
+            patientRepository.deleteById(id);
+        }
+    }
 }

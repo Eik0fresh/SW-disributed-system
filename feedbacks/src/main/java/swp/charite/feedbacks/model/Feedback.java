@@ -1,5 +1,7 @@
 package swp.charite.feedbacks.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,5 +34,5 @@ public class Feedback {
     private String feedback;
 
     @Column(name = "date", nullable = false)
-    private String date;
+    private Date date;
 }
