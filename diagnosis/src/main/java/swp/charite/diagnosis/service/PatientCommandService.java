@@ -24,7 +24,7 @@ public class PatientCommandService {
     public void handlePatientCreated(JsonNode patientData) throws JsonProcessingException {
         PatientCreateEventDto patientCreateEventDto = mapper.treeToValue(mapper.readTree(patientData.asText()), PatientCreateEventDto.class);
         if (!patientRepository.existsById(patientCreateEventDto.getId())) {
-            Patient patient = new Patient(patientCreateEventDto.getId(), patientCreateEventDto.getFirstname(), patientCreateEventDto.getSurname());
+            Patient patient = new Patient(patientCreateEventDto.getId(), patientCreateEventDto.getFirstname(), patientCreateEventDto.getSurname(), patientCreateEventDto.getEmail());
             patientRepository.save(patient);
         }
     }
@@ -33,6 +33,14 @@ public class PatientCommandService {
     public void delete(Long id) {
         if (patientRepository.existsById(id)) {
             patientRepository.deleteById(id);
+        }
+    }
+
+    public Patient query(Long p_id) {
+        if (patientRepository.existsById(p_id)) {
+            return patientRepository.findByPatientId(p_id);
+        } else {
+            return null;
         }
     }
 }

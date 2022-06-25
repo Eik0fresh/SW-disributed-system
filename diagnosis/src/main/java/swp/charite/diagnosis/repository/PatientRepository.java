@@ -8,8 +8,6 @@ import swp.charite.diagnosis.model.Patient;
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Long>{
     
-    public boolean existsByFirstnameAndSurname(String firstname, String surname);
-
-    public Patient findByFirstnameAndSurname(String firstname, String surname);
+    public Patient findByPatientId(Long p_id);
     
 }

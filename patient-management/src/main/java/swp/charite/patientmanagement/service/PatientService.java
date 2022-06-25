@@ -37,7 +37,7 @@ public class PatientService {
             Patient newPatient = new Patient(null, patient.getFirstname(), patient.getSurname(), patient.getEmail());
             patientRepository.save(newPatient);
 
-            PatientCreateEventDto patientCreateEventDto = new PatientCreateEventDto(newPatient.getPatientId(), newPatient.getFirstname(), newPatient.getSurname());
+            PatientCreateEventDto patientCreateEventDto = new PatientCreateEventDto(newPatient.getPatientId(), newPatient.getFirstname(), newPatient.getSurname(), newPatient.getEmail());
             JsonNode jsonNode = mapper.convertValue(patientCreateEventDto, JsonNode.class);
             OutboxEntity o = new OutboxEntity(UUID.randomUUID(), "patient", newPatient.getPatientId().toString(), "patient_created", jsonNode.toString());
             outboxRepository.save(o);
