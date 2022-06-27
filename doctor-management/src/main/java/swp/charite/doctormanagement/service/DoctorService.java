@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import swp.charite.doctormanagement.dto.DoctorCreateEventDto;
+import swp.charite.doctormanagement.dto.DoctorDeleteEventDto;
 import swp.charite.doctormanagement.dto.DoctorDto;
 import swp.charite.doctormanagement.model.Doctor;
 import swp.charite.doctormanagement.model.OutboxEntity;
@@ -33,8 +34,8 @@ public class DoctorService {
             Doctor newDoctor = new Doctor(null, doctor.getFirstname(), doctor.getSurname(), doctor.getEmail());
             doctorRepository.save(newDoctor);
 
-            DoctorCreateEventDto patientCreateEventDto = new DoctorCreateEventDto(newDoctor.getD_id(), newDoctor.getFirstname(), newDoctor.getSurname());
-            JsonNode jsonNode = mapper.convertValue(patientCreateEventDto, JsonNode.class);
+            DoctorCreateEventDto doctorCreateEventDto = new DoctorCreateEventDto(newDoctor.getD_id(), newDoctor.getFirstname(), newDoctor.getSurname());
+            JsonNode jsonNode = mapper.convertValue(doctorCreateEventDto, JsonNode.class);
             OutboxEntity o = new OutboxEntity(UUID.randomUUID(), "doctor", newDoctor.getD_id().toString(), "doctor_created", jsonNode.toString());
             outboxRepository.save(o);
             outboxRepository.delete(o);
@@ -66,9 +67,17 @@ public class DoctorService {
         }
     }
 
+    @Transactional
     public String deleteDoctor(Long id) {
         if (doctorRepository.existsById(id)) {
-            doctorRepository.deleteById(id);;
+            doctorRepository.deleteById(id);
+
+            DoctorDeleteEventDto doctorCreateEventDto = new DoctorDeleteEventDto(id);
+            JsonNode jsonNode = mapper.convertValue(doctorCreateEventDto, JsonNode.class);
+            OutboxEntity o = new OutboxEntity(UUID.randomUUID(), "doctor", doctorCreateEventDto.getId().toString(), "doctor_deleted", jsonNode.toString());
+            outboxRepository.save(o);
+            outboxRepository.delete(o);
+
             return "Delete doctor successfully!";
         } else {
             return "Invalid doctor ID.";
