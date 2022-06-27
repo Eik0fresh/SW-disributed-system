@@ -18,7 +18,8 @@ CREATE TYPE diagnosis_db.priority AS ENUM ('Normal', 'Urgent', 'VeryUrgent');
 CREATE TABLE diagnosis_db.patient (
     p_id      integer NOT NULL PRIMARY KEY,
     firstname text    NOT NULL,
-    surname   text    NOT NULL,   
+    surname   text    NOT NULL, 
+    email     text    NOT NULL,  
     UNIQUE (firstname, surname)
 );
 

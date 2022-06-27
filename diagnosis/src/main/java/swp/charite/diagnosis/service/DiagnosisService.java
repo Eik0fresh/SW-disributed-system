@@ -39,4 +39,12 @@ public class DiagnosisService {
         }
     }
 
+    public Diagnosis query(Long dia_id) {
+        if (diagnosisRepository.existsById(dia_id)) {
+            return diagnosisRepository.findByDiagnosisId(dia_id);
+        } else {
+            return null;
+        }
+    }
+
 }

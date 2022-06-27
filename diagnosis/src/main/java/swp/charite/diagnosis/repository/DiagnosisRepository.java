@@ -15,4 +15,7 @@ public interface DiagnosisRepository extends JpaRepository<Diagnosis, Long>{
     public Diagnosis findByPatientId(Long p_id);
 
     public Diagnosis findByDoctorId(Long d_id);
+
+    public Diagnosis findByDiagnosisId(Long dia_id);
+    
 }

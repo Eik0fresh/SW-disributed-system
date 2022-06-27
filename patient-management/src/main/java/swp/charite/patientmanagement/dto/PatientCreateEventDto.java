@@ -13,4 +13,5 @@ public class PatientCreateEventDto {
     private Long id;
     private String firstname;
     private String surname;
+    private String email;
 }
