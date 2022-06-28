@@ -33,7 +33,7 @@ public class PatientCommandService {
     @Transactional
     public void handlePatientDeleted(JsonNode patientData) throws JsonProcessingException {
         PatientDeleteEventDto patientDeleteEventDto = mapper.treeToValue(mapper.readTree(patientData.asText()), PatientDeleteEventDto.class);
-        if (!patientRepository.existsById(patientDeleteEventDto.getId())) {
+        if (patientRepository.existsById(patientDeleteEventDto.getId())) {
             patientRepository.deleteById(patientDeleteEventDto.getId());
         }
     }
