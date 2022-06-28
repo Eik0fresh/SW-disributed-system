@@ -39,8 +39,14 @@ public class KafkaApplicationConsumer {
             case "patient_created":
                 patientCommandService.handlePatientCreated(payload.get("payload"));
                 break;
+            case "patient_deleted":
+                patientCommandService.handlePatientDeleted(payload.get("payload"));
+                break;
             case "doctor_created":
                 doctorCommandService.handleDoctorCreated(payload.get("payload"));
+                break;
+            case "doctor_deleted":
+                doctorCommandService.handleDoctorDeleted(payload.get("payload"));
                 break;
             case "guidance_done":
                 guidanceCommandService.handleGuidanceDone(payload.get("payload"));

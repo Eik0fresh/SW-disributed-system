@@ -54,7 +54,7 @@ public class PatientController {
     @GetMapping(value = "/delete/{id}")
     public ResponseEntity<String> deletePatient(@PathVariable("id") Long id) {
         Boolean status = patientService.delete(id);
-        if (status == true) {
+        if (status) {
             return new ResponseEntity<String>("Delete patient successfully!", HttpStatus.OK);
         } else {
             return new ResponseEntity<String>("Invalid patient ID", HttpStatus.BAD_REQUEST);

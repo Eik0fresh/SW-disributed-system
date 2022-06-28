@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swp.charite.diagnosis.dto.DoctorCreateEventDto;
+import swp.charite.diagnosis.dto.DoctorDeleteEventDto;
 import swp.charite.diagnosis.model.Doctor;
 import swp.charite.diagnosis.repository.DoctorRepository;
 
@@ -29,10 +30,11 @@ public class DoctorCommandService {
         }
     }
 
-    // TO-DO
-    public void delete(Long id) {
-        if (doctorRepository.existsById(id)) {
-            doctorRepository.deleteById(id);
+    @Transactional
+    public void handleDoctorDeleted(JsonNode doctorData) throws JsonProcessingException {
+        DoctorDeleteEventDto doctorCreateEventDto = mapper.treeToValue(mapper.readTree(doctorData.asText()), DoctorDeleteEventDto.class);
+        if (doctorRepository.existsById(doctorCreateEventDto.getId())) {
+            doctorRepository.deleteById(doctorCreateEventDto.getId());
         }
     }
 
