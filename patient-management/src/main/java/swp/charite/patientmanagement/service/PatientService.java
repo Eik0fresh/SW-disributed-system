@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import swp.charite.patientmanagement.dto.PatientDeleteEventDto;
 import swp.charite.patientmanagement.dto.PatientUpdateEmailDto;
 import swp.charite.patientmanagement.dto.PatientCreateEventDto;
 import swp.charite.patientmanagement.dto.PatientDto;
@@ -69,9 +70,16 @@ public class PatientService {
         }
     }
 
+    @Transactional
     public Boolean delete(Long id) {
         if (patientRepository.existsById(id)) {
-            patientRepository.deleteById(id);;
+            patientRepository.deleteById(id);
+
+            PatientDeleteEventDto patientDeleteEventDto = new PatientDeleteEventDto(id);
+            JsonNode jsonNode = mapper.convertValue(patientDeleteEventDto, JsonNode.class);
+            OutboxEntity o = new OutboxEntity(UUID.randomUUID(), "patient", patientDeleteEventDto.getId().toString(), "patient_deleted", jsonNode.toString());
+            outboxRepository.save(o);
+            outboxRepository.delete(o);
             return true;
         } else {
             return false;
