@@ -3,6 +3,40 @@
   <component name="CompilerConfiguration">
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="DebeziumTransformer" />
+        <module name="patient-management" />
+        <module name="doctor-management" />
+        <module name="diagnosis" />
+        <module name="feedbacks" />
+        <module name="demo" />
+        <module name="service-discovery" />
+        <module name="gateway" />
+      </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="DebeziumTransformer" target="8" />
+      <module name="demo" target="11" />
+      <module name="diagnosis" target="11" />
+      <module name="doctor-management" target="11" />
+      <module name="feedbacks" target="11" />
+      <module name="gateway" target="11" />
+      <module name="patient-management" target="11" />
+      <module name="service-discovery" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="demo" options="-parameters" />
+      <module name="diagnosis" options="-parameters" />
+      <module name="doctor-management" options="-parameters" />
+      <module name="feedbacks" options="-parameters" />
+      <module name="gateway" options="-parameters" />
+      <module name="patient-management" options="-parameters" />
+      <module name="service-discovery" options="-parameters" />
+    </option>
   </component>
 </project>

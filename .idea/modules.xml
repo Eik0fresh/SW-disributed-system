@@ -2,8 +2,16 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/DebeziumTransformer/DebeziumTransformer.iml" filepath="$PROJECT_DIR$/DebeziumTransformer/DebeziumTransformer.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/SW-disributed-system.iml" filepath="$PROJECT_DIR$/.idea/SW-disributed-system.iml" />
       <module fileurl="file://$PROJECT_DIR$/backend/backend.iml" filepath="$PROJECT_DIR$/backend/backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo/demo.iml" filepath="$PROJECT_DIR$/demo/demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/diagnosis/diagnosis.iml" filepath="$PROJECT_DIR$/diagnosis/diagnosis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/doctor-management/doctor-management.iml" filepath="$PROJECT_DIR$/doctor-management/doctor-management.iml" />
+      <module fileurl="file://$PROJECT_DIR$/feedbacks/feedbacks.iml" filepath="$PROJECT_DIR$/feedbacks/feedbacks.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gateway/gateway.iml" filepath="$PROJECT_DIR$/gateway/gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/patient-management/patient-management.iml" filepath="$PROJECT_DIR$/patient-management/patient-management.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service-discovery/service-discovery.iml" filepath="$PROJECT_DIR$/service-discovery/service-discovery.iml" />
     </modules>
   </component>
 </project>
