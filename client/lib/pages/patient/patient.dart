@@ -1,5 +1,6 @@
 class Patient {
   String firstname;
   String lastname;
-  Patient(this.firstname, this.lastname);
+  String email;
+  Patient(this.firstname, this.lastname, this.email);
 }

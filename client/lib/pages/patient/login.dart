@@ -13,7 +13,7 @@ class PatientLogin extends StatefulWidget {
 class _PatientLoginState extends State<PatientLogin> {
   TextEditingController _firstname = TextEditingController();
   TextEditingController _lastname = TextEditingController();
-  Patient patient = Patient("", "");
+  Patient patient = Patient("", "", "");
 
   Future login() async {
     var url = Uri.parse("http://localhost:8080/patient/createPatient");
