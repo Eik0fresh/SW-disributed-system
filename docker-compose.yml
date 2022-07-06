@@ -18,18 +18,18 @@ services:
     networks:
       - application-backend-network
 
-  demo-service:
-    build: ./demo/
-    container_name: demo-service
-    ports:
-      - "5510:5510"
-    env_file:
-      - ./demo/.env
-    networks:
-      - application-backend-network
-    depends_on:
-      - ed-gateway
-      - kafka-broker1
+#  demo-service:
+#    build: ./demo/
+#    container_name: demo-service
+#    ports:
+#      - "5510:5510"
+#    env_file:
+#      - ./demo/.env
+#    networks:
+#      - application-backend-network
+#    depends_on:
+#      - ed-gateway
+#      - kafka-broker1
 
   patient-service:
     build: ./patient-management/

@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import swp.charite.patientmanagement.dto.FhirPatientDto;
 import swp.charite.patientmanagement.dto.PatientUpdateEmailDto;
 import swp.charite.patientmanagement.dto.PatientDto;
 import swp.charite.patientmanagement.service.PatientService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/patient")
@@ -42,13 +45,22 @@ public class PatientController {
     }
 
     @GetMapping(value = "/query/{id}")
-    public ResponseEntity<PatientDto> queryPatient(@PathVariable("id") Long p_id) {
-        PatientDto patient = patientService.query(p_id);
+    public ResponseEntity<?> queryPatient(@PathVariable("id") String p_id) {
+        PatientDto patient = patientService.getPatientFromKisById(p_id);
         if (patient != null) {
-            return new ResponseEntity<PatientDto>(patient, HttpStatus.OK);
+            return new ResponseEntity<>(patient, HttpStatus.OK);
         } else {
-            return new ResponseEntity<PatientDto>(patient, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping(value = "get/from/kis/{firstname}/{surname}")
+    public ResponseEntity<?> getPatientsFromKIS(@PathVariable("firstname") String firstname, @PathVariable("surname") String surname) {
+        List<FhirPatientDto> patients = patientService.getPatientsFromKIS(firstname, surname);
+        if (patients != null) {
+            return new ResponseEntity<>(patients, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping(value = "/delete/{id}")
