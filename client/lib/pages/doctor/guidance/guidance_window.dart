@@ -1,8 +1,16 @@
+import 'dart:io';
+import 'package:pdf/pdf.dart';
 import 'package:flutter/material.dart';
+//requests
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:client/pages/patient/patient.dart';
+//qr
 import 'package:qr_flutter/qr_flutter.dart';
+//jpg
+import 'package:pdf/widgets.dart' as pw;
+import 'package:path_provider/path_provider.dart';
 
 //import 'containers/create_patient.dart';
 //import 'containers/guidance.dart';
@@ -20,12 +28,12 @@ class GuidanceWindow extends StatefulWidget {
 class _GuidanceWindowState extends State<GuidanceWindow> {
 // ###############     Variables    #############
 //var patient
+  var patientInfoShown = false;
+  var patientfirstname = "test";
+  var patientsurname = "";
+  var birthday = "";
   final _formKey = GlobalKey<FormState>();
-  RegExp emailExp = RegExp(
-      '^[a-zA-Z0-9.!#\$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*\$');
-  TextEditingController firstname = TextEditingController();
-  TextEditingController lastname = TextEditingController();
-  TextEditingController email = TextEditingController();
+  TextEditingController patientID = TextEditingController();
   Patient patient = Patient("", "", "");
 
 //var guidance
@@ -110,6 +118,38 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
     }
   }
 
+  var pdf = pw.Document();
+  writeOnPdf() {
+    pdf.addPage(pw.MultiPage(
+        pageFormat: PdfPageFormat.a4,
+        margin: pw.EdgeInsets.all(32),
+        build: (pw.Context context) {
+          return <pw.Widget>[
+            pw.Header(
+                level: 0,
+                child: pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children: <pw.Widget>[
+                      pw.Column(children: [
+                        pw.BarcodeWidget(
+                            data: '',
+                            width: 100,
+                            height: 100,
+                            barcode: pw.Barcode.qrCode()),
+                      ]),
+                    ])),
+          ];
+        }));
+  }
+
+  Future saveQRCodeaspdf() async {
+    Directory documentDirectory = await getApplicationDocumentsDirectory();
+    String documentPath = documentDirectory.path;
+    File file = File("$documentPath/example.pdf");
+    await file.delete();
+    file.writeAsBytes(await pdf.save());
+  }
+
 //################   Widget   ##############
 
   @override
@@ -122,7 +162,7 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
         body: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Center(
-                child: Column(children: <Widget>[
+                child: ListView(children: <Widget>[
               //Patient
               Container(
                 child: Column(
@@ -136,47 +176,44 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             TextFormField(
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(12),
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return 'Please enter valid name';
+                                  return 'Please enter valid ID';
                                 }
                                 return null;
                               },
                               decoration:
-                                  const InputDecoration(hintText: "First Name"),
-                              controller: firstname,
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            TextFormField(
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Please enter valid name';
+                                  const InputDecoration(hintText: "Patient ID"),
+                              controller: patientID,
+                              onChanged: (patientID) {
+                                if (patientID.length == 12) {
+                                  //send request
+                                  //show patient
+                                  patientInfoShown = true;
+                                  setState(() {});
                                 }
-                                return null;
                               },
-                              decoration:
-                                  const InputDecoration(hintText: "Last Name"),
-                              controller: lastname,
                             ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            TextFormField(
-                              validator: (value) {
-                                if (!value!.contains(emailExp)) {
-                                  return 'Please enter valid email';
-                                }
-                                return null;
-                              },
-                              decoration:
-                                  const InputDecoration(hintText: "Email"),
-                              controller: email,
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
+                            Visibility(
+                              visible: patientInfoShown,
+                              child: Padding(
+                                padding: const EdgeInsets.all(5),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      patientfirstname,
+                                      textScaleFactor: 1.5,
+                                    ),
+                                    Text(patientsurname),
+                                    Text(birthday),
+                                  ],
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ),
@@ -254,6 +291,7 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                     border: Border.all(width: 5, color: Colors.blue),
                     borderRadius: BorderRadius.circular(30)),
               ),
+
 //qrCode
               Container(
                 child: Center(
@@ -281,12 +319,19 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                             createQRCode();
                           },
                           child: const Text('GENERATE QR')),
+                      ElevatedButton(
+                          onPressed: () async {
+                            writeOnPdf();
+                            await saveQRCodeaspdf();
+                            pdf = pw.Document();
+                          },
+                          child: const Text('Save QR'))
                     ],
                   ),
                 ),
                 margin: const EdgeInsets.all(5),
                 padding: const EdgeInsets.all(10),
-                height: 300,
+                height: 320,
                 decoration: BoxDecoration(
                     color: Colors.lightGreen,
                     border: Border.all(width: 5, color: Colors.green),
