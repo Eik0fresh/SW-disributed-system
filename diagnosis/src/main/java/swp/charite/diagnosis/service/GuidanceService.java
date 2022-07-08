@@ -12,8 +12,10 @@ import swp.charite.diagnosis.dto.GuidanceFromDoctor;
 import swp.charite.diagnosis.dto.GuidanceToPatient;
 import swp.charite.diagnosis.dto.GuidanceCreateEventDto;
 import swp.charite.diagnosis.model.Guidance;
+import swp.charite.diagnosis.model.Guide;
 import swp.charite.diagnosis.model.OutboxEntity;
 import swp.charite.diagnosis.repository.GuidanceRepository;
+import swp.charite.diagnosis.repository.GuideRepository;
 import swp.charite.diagnosis.repository.OutboxRepository;
 
 @Service
@@ -24,6 +26,9 @@ public class GuidanceService {
 
     @Autowired
     private GuidanceRepository guidanceRepository;
+
+    @Autowired
+    private GuideRepository guideRepository;
 
     @Autowired
     private OutboxRepository outboxRepository;
@@ -51,6 +56,15 @@ public class GuidanceService {
         if (guidanceRepository.existsByDiagnosisId(dia_id)){
             Guidance guidance = guidanceRepository.findByDiagnosisId(dia_id);
             return new GuidanceToPatient(guidance.getGuidance(), guidance.getPriority().toString(), guidance.getDone());
+        } else {
+            return null;
+        }
+    }
+
+    public String[] getAdvice(String type) {
+        if (guideRepository.existsByType(type)) {
+            Guide guide = guideRepository.findByType(type);
+            return guide.getAdvice();
         } else {
             return null;
         }
