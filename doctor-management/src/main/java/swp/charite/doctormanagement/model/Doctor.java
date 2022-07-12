@@ -20,7 +20,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class Doctor {
     @Id
     @Column(name = "d_id", nullable = false)
