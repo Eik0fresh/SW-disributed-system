@@ -40,7 +40,7 @@ public class PatientManagementApplication {
 
     @Bean
     public IGenericClient client() {
-        return fhirContext().newRestfulGenericClient("http://hapi.fhir.org/baseR4/");
+        return fhirContext().newRestfulGenericClient("http://test.hapifhir.io/baseR4/");
     }
 
 }
