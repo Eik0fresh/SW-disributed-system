@@ -71,3 +71,28 @@ CREATE TABLE diagnosis_db.outbox (
 );
 
 ALTER TABLE diagnosis_db.outbox OWNER TO postgres;
+
+CREATE TABLE diagnosis_db.guide (
+    id        integer NOT NULL PRIMARY KEY,
+    type      text    NOT NULL,
+    advice    text[]  NOT NULL
+);
+
+ALTER TABLE diagnosis_db.guide ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME diagnosis_db.guide_id
+    START WITH 0
+    INCREMENT BY 1
+    MINVALUE 0
+    NO MAXVALUE
+    CACHE 1
+);
+
+INSERT INTO diagnosis_db.guide (type, advice) 
+VALUES ('Schnittwunde', 
+        '{
+            "Nach ca. 10 Tagen zu Ihrem Hausarzt und Fäden ziehen lassen", 
+            "Körperliche Belastung/ Krafttraining in den ersten 48 Stunden meiden", 
+            "Schwimmen, Sauna erst nach Entfernung der Fäden",
+            "Ggf. Tetanusstatus hausärztlich klären lassen, falls Schutzimpfung in Notaufnahme abgelehnt wurde",
+            "Darauf achten den Verband möglichst keimfrei zu wechseln (siehe Vieoanleitung)"
+        }');

@@ -180,6 +180,13 @@ Current requestbody and responsebody are only for presentation. A common respons
 | Method| POST |
 | Input | {"firstname": "Foo","surname": "Wang"} |
 | Output| Guidance in Json format |
+#### Get standard guidance according type of illness
+| | Value |
+| ----------- | ----------- |
+| URL| http://localhost:5503/diagnosis/advice |
+| Method| POST |
+| Input | {"type": "Schnittwunde"} |
+| Output| ["guidance01", "guidance02", "guidance03" ...] |
 =======
 # SW-distributed-system
 Repository for the software project „Distributed System“

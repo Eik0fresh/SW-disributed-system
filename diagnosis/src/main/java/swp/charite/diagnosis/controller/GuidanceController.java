@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import swp.charite.diagnosis.dto.GuidanceFromDoctor;
 import swp.charite.diagnosis.dto.GuidanceToPatient;
+import swp.charite.diagnosis.dto.TypeDto;
 import swp.charite.diagnosis.service.DiagnosisService;
 import swp.charite.diagnosis.service.GuidanceService;
 
@@ -34,6 +35,16 @@ public class GuidanceController {
         Long dia_id = diagnosisService.findByPatient(p_id);
         GuidanceToPatient guidance = guidanceService.query(dia_id);
         return new ResponseEntity<GuidanceToPatient>(guidance, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/advice")
+    public ResponseEntity<?> getAdvice(@RequestBody TypeDto typeDto){
+        String[] advice = guidanceService.getAdvice(typeDto.getType());
+        if (advice != null) {
+            return new ResponseEntity<String[]>(advice, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 }
