@@ -6,6 +6,7 @@
       <excludeFolder url="file://$MODULE_DIR$/client/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/client/build" />
       <excludeFolder url="file://$MODULE_DIR$/client/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/.idea/dataSources/19255a19-fe90-4b60-9540-0cb010890c9a/storage_v2" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
