@@ -38,9 +38,12 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
 
 //var guidance
   String dropdownvalue = '...';
+  List<String> advice = <String>[];
+  TextEditingController _guidance = TextEditingController();
   var items = [
     '...',
     'Kopfschmerzen',
+    'Schnittwunde',
     'Knochenbruch',
     'Entfernung von einer Naht',
     'Krebs, Frühstadium',
@@ -94,6 +97,20 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
         },
         body: reqBody);
     return res.body;
+  }
+
+  Future getAdvice() async {
+    var url = Uri.parse("http://ed-gateway:8080/diagnosis/advice");
+    var req_body = json.encode({'type': dropdownvalue});
+    var res = await http.post(url,
+        headers: {'Content-Type': 'application/json'}, body: req_body);
+
+    _guidance.clear();
+
+    for (var value in JsonDecoder().convert(res.body)) {
+      advice.add(value);
+      _guidance.text += value;
+    }
   }
 
 //############ func qr Code ##############
@@ -273,6 +290,7 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                               onChanged: (String? newValue) {
                                 setState(() {
                                   dropdownvalue = newValue!;
+                                  getAdvice();
                                 });
                               },
                             ),
@@ -281,6 +299,16 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                             decoration: InputDecoration(
                                 hintText:
                                     "PatientID, imported from creat/load patient page"),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          TextField(
+                            controller: _guidance,
+                            decoration: InputDecoration(hintText: "Guidance here"),
+                            keyboardType: TextInputType.multiline,
+                            maxLines: 10,
+                            minLines: 1,
                           ),
                         ])))),
                 margin: const EdgeInsets.all(5),
