@@ -43,7 +43,7 @@ public class GuidanceController {
         if (advice != null) {
             return new ResponseEntity<String[]>(advice, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<String[]>(new String[]{}, HttpStatus.NOT_FOUND);
         }
     }
 
