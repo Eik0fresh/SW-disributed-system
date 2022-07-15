@@ -87,6 +87,28 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
     return res.body;
   }
 
+  Future query() async {
+    var url =
+        Uri.parse("http://ed-gateway:8080/patient/query/${patientID.text}");
+    final res = await http.get(
+      url, /*headers: {
+      "Content-Type": 'application/json',
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST"
+    }*/
+    );
+    var responseData = json.decode(res.body);
+    patientfirstname = responseData["firstname"];
+    patient.firstname = patientfirstname;
+    patientsurname = responseData["surname"];
+    patient.lastname = patientsurname;
+    patient.email = responseData["email"];
+    //DtoEmail, but birthday useful to make a patient 99,9% unique
+    //birthday = responseData["birthday"];
+    signup();
+    return res.body;
+  }
+
   bool validPatient() {
     //mark not filled textfields if they are empty/no valid email
     if (_formKey.currentState!.validate()) {
@@ -157,9 +179,12 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                 child: pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                     children: <pw.Widget>[
+                      pw.Text(
+                        'Scan QR Code um die Diagnosen in der App anzusehen.',
+                      ),
                       pw.Column(children: [
                         pw.BarcodeWidget(
-                            data: '',
+                            data: 'Hello World',
                             width: 100,
                             height: 100,
                             barcode: pw.Barcode.qrCode()),
@@ -190,11 +215,18 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
             padding: const EdgeInsets.all(20.0),
             child: Center(
                 child: ListView(children: <Widget>[
+              Text('DoctorID: ' + dID.toString()),
               //Patient
               Container(
                 child: Column(
                   children: <Widget>[
-                    const Text('Patientdata'),
+                    const Text(
+                      'Patientdata',
+                      textScaleFactor: 2,
+                    ),
+                    const Text(
+                      'Bsp:2395151',
+                    ),
                     Form(
                       key: _formKey,
                       child: Padding(
@@ -204,7 +236,7 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                           children: <Widget>[
                             TextFormField(
                               inputFormatters: [
-                                LengthLimitingTextInputFormatter(12),
+                                LengthLimitingTextInputFormatter(7),
                                 FilteringTextInputFormatter.digitsOnly,
                               ],
                               validator: (value) {
@@ -216,9 +248,9 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                               decoration:
                                   const InputDecoration(hintText: "Patient-ID"),
                               controller: patientID,
-                              onChanged: (patientID) {
-                                if (patientID.length == 12) {
-                                  //load Patient
+                              onChanged: (patientID) async {
+                                if (patientID.length == 7) {
+                                  await query();
                                   patientInfoShown = true;
                                 } else {
                                   patientInfoShown = false;
@@ -250,7 +282,14 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                                   ],
                                 ),
                               ),
-                            )
+                            ),
+                            ElevatedButton(
+                                onPressed: () async {
+                                  await query();
+                                  patientInfoShown = true;
+                                  setState(() {});
+                                },
+                                child: const Text('Load Patient')),
                           ],
                         ),
                       ),
@@ -286,7 +325,9 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                         padding: const EdgeInsets.all(10.0),
                         child: Center(
                             child: Column(children: <Widget>[
-                          Text('DoctorID: ' + dID.toString()),
+                          const Text(
+                            'Bsp:B57.2',
+                          ),
                           TextFormField(
                             //may two fields with focus switch are better (no .)
                             inputFormatters: [
