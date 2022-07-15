@@ -7,10 +7,14 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:client/pages/patient/patient.dart';
 //qr
-import 'package:qr_flutter/qr_flutter.dart';
+import 'package:barcode/barcode.dart';
+import 'package:barcode_widget/barcode_widget.dart';
+//import 'package:qr_flutter/qr_flutter.dart';
 //jpg
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
+
+import 'package:xml/xml.dart';
 
 //import 'containers/create_patient.dart';
 //import 'containers/guidance.dart';
@@ -25,26 +29,40 @@ class GuidanceWindow extends StatefulWidget {
   _GuidanceWindowState createState() => _GuidanceWindowState();
 }
 
+class FetchData {
+  data(idc) async {
+    //translate idc to text from xml
+    final loadfile = File('icd10gm_short.xml');
+    final document = XmlDocument.parse(loadfile.readAsStringSync());
+    final titles = document.findAllElements('Class');
+    for (var element in titles) {
+      if (element.attributes.first.value == idc) {
+        var result = element.getElement('Rubric')?.text;
+        result?.replaceAll(' ', '');
+        result?.replaceAll('\n', '');
+        //why graphic bug
+        return result;
+      }
+    }
+    return '';
+  }
+}
+
 class _GuidanceWindowState extends State<GuidanceWindow> {
 // ###############     Variables    #############
 //var patient
   var patientInfoShown = false;
-  var patientfirstname = "test";
+  var patientfirstname = "Patient1";
   var patientsurname = "";
-  var birthday = "";
+  var birthday = "1.1.1899";
   final _formKey = GlobalKey<FormState>();
   TextEditingController patientID = TextEditingController();
   Patient patient = Patient("", "", "");
 
-//var guidance
-  String dropdownvalue = '...';
-  var items = [
-    '...',
-    'Kopfschmerzen',
-    'Knochenbruch',
-    'Entfernung von einer Naht',
-    'Krebs, Frühstadium',
-  ];
+//var diagnosis
+  var idc = "";
+  TextEditingController idcController = TextEditingController();
+  FetchData icdxml = FetchData();
 
 //var qr-code
   TextEditingController qrcontroller = TextEditingController();
@@ -96,10 +114,19 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
     return res.body;
   }
 
+  setIDC(idcController) async {
+    if (idcController.length == 3 || idcController.length > 4) {
+      idc = await icdxml.data(idcController);
+    } else {
+      idc = '';
+    }
+    setState(() {});
+  }
+
 //############ func qr Code ##############
-  createQRCode() {
+  createQRCode() async {
     if (validPatient() == true) {
-      if (dropdownvalue != '...') {
+      if (idc != '') {
         //todo change res.body to patient ID
         var pID = signup();
         //createGuidance(pID);
@@ -187,15 +214,16 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                                 return null;
                               },
                               decoration:
-                                  const InputDecoration(hintText: "Patient ID"),
+                                  const InputDecoration(hintText: "Patient-ID"),
                               controller: patientID,
                               onChanged: (patientID) {
                                 if (patientID.length == 12) {
-                                  //send request
-                                  //show patient
+                                  //load Patient
                                   patientInfoShown = true;
-                                  setState(() {});
+                                } else {
+                                  patientInfoShown = false;
                                 }
+                                setState(() {});
                               },
                             ),
                             Visibility(
@@ -208,8 +236,17 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                                       patientfirstname,
                                       textScaleFactor: 1.5,
                                     ),
-                                    Text(patientsurname),
-                                    Text(birthday),
+                                    Padding(
+                                      padding: const EdgeInsets.all(20),
+                                      child: Text(
+                                        patientsurname,
+                                        textScaleFactor: 1.5,
+                                      ),
+                                    ),
+                                    Text(
+                                      birthday,
+                                      textScaleFactor: 1.5,
+                                    ),
                                   ],
                                 ),
                               ),
@@ -250,42 +287,31 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                         child: Center(
                             child: Column(children: <Widget>[
                           Text('DoctorID: ' + dID.toString()),
-                          const Text(
-                              'Die Diagnosen werden aus der DB geladen (oder vom anderen Program importiert \n mehrere Diagnose auswählbar (?))'),
-                          Row(children: <Widget>[
-                            const Text('wählen Sie die Diagnose aus:'),
-                            DropdownButton(
-                              // Initial Value
-                              value: dropdownvalue,
-
-                              // Down Arrow Icon
-                              icon: const Icon(Icons.keyboard_arrow_down),
-
-                              // Array list of items
-                              items: items.map((String items) {
-                                return DropdownMenuItem(
-                                  value: items,
-                                  child: Text(items),
-                                );
-                              }).toList(),
-                              // After selecting the desired option,it will
-                              // change button value to selected value
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  dropdownvalue = newValue!;
-                                });
-                              },
-                            ),
-                          ]),
-                          const TextField(
-                            decoration: InputDecoration(
-                                hintText:
-                                    "PatientID, imported from creat/load patient page"),
+                          TextFormField(
+                            //may two fields with focus switch are better (no .)
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(6),
+                            ],
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter ICD';
+                              }
+                              return null;
+                            },
+                            decoration: const InputDecoration(hintText: "ICD"),
+                            controller: idcController,
+                            onChanged: (idcController) {
+                              {
+                                setIDC(idcController);
+                                setState(() {});
+                              }
+                            },
                           ),
+                          Text(idc),
                         ])))),
                 margin: const EdgeInsets.all(5),
                 padding: const EdgeInsets.all(10),
-                height: 220,
+                height: 200,
                 decoration: BoxDecoration(
                     color: Colors.lightBlue,
                     border: Border.all(width: 5, color: Colors.blue),
@@ -300,9 +326,11 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                     children: [
                       Visibility(
                         visible: qrvisibility,
-                        child: QrImage(
-                          data: qrcontroller.text,
-                          size: 150,
+                        child: BarcodeWidget(
+                          barcode: Barcode.qrCode(),
+                          data: "Hello World",
+                          width: 100,
+                          height: 100,
                         ),
                       ),
                       Container(
@@ -311,7 +339,7 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                           controller: qrcontroller,
                           decoration: const InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'Enter URL'),
+                              labelText: 'Enter Test - URL'),
                         ),
                       ),
                       ElevatedButton(

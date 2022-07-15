@@ -1,3 +1,5 @@
+/*
+
 import 'package:flutter/material.dart';
 
 Widget qrCode() {
@@ -12,3 +14,4 @@ Widget qrCode() {
         borderRadius: BorderRadius.circular(30)),
   );
 }
+*/
