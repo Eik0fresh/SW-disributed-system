@@ -124,7 +124,9 @@ class _RegistrationWindowState extends State<RegistrationWindow> {
                     ),
                   )),
               ElevatedButton(
-                  onPressed: registrationCheck(),
+                  onPressed: () {
+                    registrationCheck();
+                  },
                   child: const Text('Registrieren'))
             ]))));
   }
