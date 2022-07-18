@@ -15,7 +15,7 @@ import 'package:path_provider/path_provider.dart';
 
 import 'package:xml/xml.dart';
 
-import 'package:client/pages/registration/registration.dart';
+import 'package:client/pages/patient/registration/registration.dart';
 //import 'containers/create_patient.dart';
 //import 'containers/guidance.dart';
 //import 'containers/qr_code.dart';

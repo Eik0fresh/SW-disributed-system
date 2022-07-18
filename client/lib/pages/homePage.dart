@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
           //  height: 20,
           //),
           button("Doctor", DoctorHomePage()),
-          button("Temp Patient", DoctorHomePage()),
+          button("Patient", PatientHomePage()),
           button("Temp Management", DoctorHomePage()),
         ])));
   }
