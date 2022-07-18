@@ -59,6 +59,19 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
   TextEditingController patientID = TextEditingController();
   Patient patient = Patient("", "", "");
 
+//var guidance
+  String dropdownvalue = '...';
+  List<String> advice = <String>[];
+  TextEditingController _guidance = TextEditingController();
+  var items = [
+    '...',
+    'Kopfschmerzen',
+    'Schnittwunde',
+    'Knochenbruch',
+    'Entfernung von einer Naht',
+    'Krebs, Frühstadium',
+  ];
+  
 //var diagnosis
   var idc = "";
   TextEditingController idcController = TextEditingController();
@@ -136,6 +149,20 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
     return res.body;
   }
 
+  Future getAdvice() async {
+    var url = Uri.parse("http://ed-gateway:8080/diagnosis/advice");
+    var req_body = json.encode({'type': dropdownvalue});
+    var res = await http.post(url,
+        headers: {'Content-Type': 'application/json'}, body: req_body);
+
+    _guidance.clear();
+
+    for (var value in JsonDecoder().convert(res.body)) {
+      advice.add(value);
+      _guidance.text += value;
+    }
+  }
+  
   setIDC(idcController) async {
     if (idcController.length == 3 || idcController.length > 4) {
       idc = await icdxml.data(idcController);
@@ -349,6 +376,39 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                             },
                           ),
                           Text(idc),
+                          DropdownButton(
+                              // Initial Value
+                              value: dropdownvalue,
+
+                              // Down Arrow Icon
+                              icon: const Icon(Icons.keyboard_arrow_down),
+
+                              // Array list of items
+                              items: items.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Text(items),
+                                );
+                              }).toList(),
+                              // After selecting the desired option,it will
+                              // change button value to selected value
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  dropdownvalue = newValue!;
+                                  getAdvice();
+                                });
+                              },
+                            ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          TextField(
+                            controller: _guidance,
+                            decoration: InputDecoration(hintText: "Guidance here"),
+                            keyboardType: TextInputType.multiline,
+                            maxLines: 10,
+                            minLines: 1,
+                          ),
                         ])))),
                 margin: const EdgeInsets.all(5),
                 padding: const EdgeInsets.all(10),
