@@ -7,11 +7,15 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:client/pages/patient/patient.dart';
 //qr
-import 'package:qr_flutter/qr_flutter.dart';
+import 'package:barcode_widget/barcode_widget.dart';
+//import 'package:qr_flutter/qr_flutter.dart';
 //jpg
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
 
+import 'package:xml/xml.dart';
+
+import 'package:client/pages/registration/registration.dart';
 //import 'containers/create_patient.dart';
 //import 'containers/guidance.dart';
 //import 'containers/qr_code.dart';
@@ -25,13 +29,32 @@ class GuidanceWindow extends StatefulWidget {
   _GuidanceWindowState createState() => _GuidanceWindowState();
 }
 
+class FetchData {
+  data(idc) async {
+    //translate idc to text from xml
+    final loadfile = File('icd10gm_short.xml');
+    final document = XmlDocument.parse(loadfile.readAsStringSync());
+    final titles = document.findAllElements('Class');
+    for (var element in titles) {
+      if (element.attributes.first.value == idc) {
+        var result = element.getElement('Rubric')?.text;
+        result?.replaceAll(' ', '');
+        result?.replaceAll('\n', '');
+        //why graphic bug
+        return result;
+      }
+    }
+    return '';
+  }
+}
+
 class _GuidanceWindowState extends State<GuidanceWindow> {
 // ###############     Variables    #############
 //var patient
   var patientInfoShown = false;
-  var patientfirstname = "test";
+  var patientfirstname = "Patient1";
   var patientsurname = "";
-  var birthday = "";
+  var birthday = "1.1.1899";
   final _formKey = GlobalKey<FormState>();
   TextEditingController patientID = TextEditingController();
   Patient patient = Patient("", "", "");
@@ -48,6 +71,11 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
     'Entfernung von einer Naht',
     'Krebs, Frühstadium',
   ];
+  
+//var diagnosis
+  var idc = "";
+  TextEditingController idcController = TextEditingController();
+  FetchData icdxml = FetchData();
 
 //var qr-code
   TextEditingController qrcontroller = TextEditingController();
@@ -69,6 +97,28 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
           "Access-Control-Allow-Methods": "POST"
         },
         body: reqBody);
+    return res.body;
+  }
+
+  Future query() async {
+    var url =
+        Uri.parse("http://ed-gateway:8080/patient/query/${patientID.text}");
+    final res = await http.get(
+      url, /*headers: {
+      "Content-Type": 'application/json',
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST"
+    }*/
+    );
+    var responseData = json.decode(res.body);
+    patientfirstname = responseData["firstname"];
+    patient.firstname = patientfirstname;
+    patientsurname = responseData["surname"];
+    patient.lastname = patientsurname;
+    patient.email = responseData["email"];
+    //DtoEmail, but birthday useful to make a patient 99,9% unique
+    //birthday = responseData["birthday"];
+    signup();
     return res.body;
   }
 
@@ -112,11 +162,20 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
       _guidance.text += value;
     }
   }
+  
+  setIDC(idcController) async {
+    if (idcController.length == 3 || idcController.length > 4) {
+      idc = await icdxml.data(idcController);
+    } else {
+      idc = '';
+    }
+    setState(() {});
+  }
 
 //############ func qr Code ##############
-  createQRCode() {
+  createQRCode() async {
     if (validPatient() == true) {
-      if (dropdownvalue != '...') {
+      if (idc != '') {
         //todo change res.body to patient ID
         var pID = signup();
         //createGuidance(pID);
@@ -147,9 +206,12 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                 child: pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                     children: <pw.Widget>[
+                      pw.Text(
+                        'Scan QR Code um die Diagnosen in der App anzusehen.',
+                      ),
                       pw.Column(children: [
                         pw.BarcodeWidget(
-                            data: '',
+                            data: 'Hello World',
                             width: 100,
                             height: 100,
                             barcode: pw.Barcode.qrCode()),
@@ -180,11 +242,18 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
             padding: const EdgeInsets.all(20.0),
             child: Center(
                 child: ListView(children: <Widget>[
+              Text('DoctorID: ' + dID.toString()),
               //Patient
               Container(
                 child: Column(
                   children: <Widget>[
-                    const Text('Patientdata'),
+                    const Text(
+                      'Patientdata',
+                      textScaleFactor: 2,
+                    ),
+                    const Text(
+                      'Bsp:2395151',
+                    ),
                     Form(
                       key: _formKey,
                       child: Padding(
@@ -194,7 +263,7 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                           children: <Widget>[
                             TextFormField(
                               inputFormatters: [
-                                LengthLimitingTextInputFormatter(12),
+                                LengthLimitingTextInputFormatter(7),
                                 FilteringTextInputFormatter.digitsOnly,
                               ],
                               validator: (value) {
@@ -204,15 +273,16 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                                 return null;
                               },
                               decoration:
-                                  const InputDecoration(hintText: "Patient ID"),
+                                  const InputDecoration(hintText: "Patient-ID"),
                               controller: patientID,
-                              onChanged: (patientID) {
-                                if (patientID.length == 12) {
-                                  //send request
-                                  //show patient
+                              onChanged: (patientID) async {
+                                if (patientID.length == 7) {
+                                  await query();
                                   patientInfoShown = true;
-                                  setState(() {});
+                                } else {
+                                  patientInfoShown = false;
                                 }
+                                setState(() {});
                               },
                             ),
                             Visibility(
@@ -225,12 +295,28 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                                       patientfirstname,
                                       textScaleFactor: 1.5,
                                     ),
-                                    Text(patientsurname),
-                                    Text(birthday),
+                                    Padding(
+                                      padding: const EdgeInsets.all(20),
+                                      child: Text(
+                                        patientsurname,
+                                        textScaleFactor: 1.5,
+                                      ),
+                                    ),
+                                    Text(
+                                      birthday,
+                                      textScaleFactor: 1.5,
+                                    ),
                                   ],
                                 ),
                               ),
-                            )
+                            ),
+                            ElevatedButton(
+                                onPressed: () async {
+                                  await query();
+                                  patientInfoShown = true;
+                                  setState(() {});
+                                },
+                                child: const Text('Load Patient')),
                           ],
                         ),
                       ),
@@ -266,12 +352,31 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                         padding: const EdgeInsets.all(10.0),
                         child: Center(
                             child: Column(children: <Widget>[
-                          Text('DoctorID: ' + dID.toString()),
                           const Text(
-                              'Die Diagnosen werden aus der DB geladen (oder vom anderen Program importiert \n mehrere Diagnose auswählbar (?))'),
-                          Row(children: <Widget>[
-                            const Text('wählen Sie die Diagnose aus:'),
-                            DropdownButton(
+                            'Bsp:B57.2',
+                          ),
+                          TextFormField(
+                            //may two fields with focus switch are better (no .)
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(6),
+                            ],
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter ICD';
+                              }
+                              return null;
+                            },
+                            decoration: const InputDecoration(hintText: "ICD"),
+                            controller: idcController,
+                            onChanged: (idcController) {
+                              {
+                                setIDC(idcController);
+                                setState(() {});
+                              }
+                            },
+                          ),
+                          Text(idc),
+                          DropdownButton(
                               // Initial Value
                               value: dropdownvalue,
 
@@ -294,12 +399,6 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                                 });
                               },
                             ),
-                          ]),
-                          const TextField(
-                            decoration: InputDecoration(
-                                hintText:
-                                    "PatientID, imported from creat/load patient page"),
-                          ),
                           SizedBox(
                             height: 20,
                           ),
@@ -313,7 +412,7 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                         ])))),
                 margin: const EdgeInsets.all(5),
                 padding: const EdgeInsets.all(10),
-                height: 220,
+                height: 200,
                 decoration: BoxDecoration(
                     color: Colors.lightBlue,
                     border: Border.all(width: 5, color: Colors.blue),
@@ -328,9 +427,11 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                     children: [
                       Visibility(
                         visible: qrvisibility,
-                        child: QrImage(
-                          data: qrcontroller.text,
-                          size: 150,
+                        child: BarcodeWidget(
+                          barcode: Barcode.qrCode(),
+                          data: "Hello World",
+                          width: 100,
+                          height: 100,
                         ),
                       ),
                       Container(
@@ -339,7 +440,7 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                           controller: qrcontroller,
                           decoration: const InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'Enter URL'),
+                              labelText: 'Enter Test - URL'),
                         ),
                       ),
                       ElevatedButton(
@@ -365,6 +466,18 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                     border: Border.all(width: 5, color: Colors.green),
                     borderRadius: BorderRadius.circular(30)),
               ),
+              ElevatedButton(
+                  onPressed: () {
+                    firstnameRegistration = patientfirstname;
+                    surnameRegistration = patientsurname;
+                    patientIDRegistration = patientID.text;
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => RegistrationWindow()),
+                    );
+                  },
+                  child: const Text('(Patient Registrierung)'))
             ]))));
   }
 }
