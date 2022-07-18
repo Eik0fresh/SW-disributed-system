@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:client/pages/patient/patient.dart';
 //qr
-import 'package:barcode/barcode.dart';
 import 'package:barcode_widget/barcode_widget.dart';
 //import 'package:qr_flutter/qr_flutter.dart';
 //jpg
@@ -16,6 +15,7 @@ import 'package:path_provider/path_provider.dart';
 
 import 'package:xml/xml.dart';
 
+import 'package:client/pages/registration/registration.dart';
 //import 'containers/create_patient.dart';
 //import 'containers/guidance.dart';
 //import 'containers/qr_code.dart';
@@ -406,6 +406,18 @@ class _GuidanceWindowState extends State<GuidanceWindow> {
                     border: Border.all(width: 5, color: Colors.green),
                     borderRadius: BorderRadius.circular(30)),
               ),
+              ElevatedButton(
+                  onPressed: () {
+                    firstnameRegistration = patientfirstname;
+                    surnameRegistration = patientsurname;
+                    patientIDRegistration = patientID.text;
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => RegistrationWindow()),
+                    );
+                  },
+                  child: const Text('(Patient Registrierung)'))
             ]))));
   }
 }
