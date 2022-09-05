@@ -11,14 +11,16 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("HomePage"), centerTitle: true),
+        appBar: AppBar(title: const Text("HomePage"), centerTitle: true),
         body: Center(
-            child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-          button("Patient", PatientHomePage()),
-          SizedBox(
-            height: 20,
-          ),
+            child: Wrap(spacing: 20, runSpacing: 20, children: <Widget>[
+          //button("Patient", PatientHomePage()),
+          //SizedBox(
+          //  height: 20,
+          //),
           button("Doctor", DoctorHomePage()),
+          button("Patient", PatientHomePage()),
+          button("Temp Management", DoctorHomePage()),
         ])));
   }
 

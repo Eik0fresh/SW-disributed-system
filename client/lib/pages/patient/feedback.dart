@@ -13,16 +13,15 @@ class _PatientFeedbackState extends State<PatientFeedback> {
   TextEditingController _pId = TextEditingController();
   TextEditingController _diaId = TextEditingController();
   TextEditingController _feedback = TextEditingController();
-  Patient patient = Patient("", "");
+  Patient patient = Patient("", "", "");
 
   Future send() async {
     var url = Uri.parse("http://localhost:8080/patient/createFeedback");
-    var req_body = json
-        .encode({
+    var req_body = json.encode({
       'patient_id': _pId.text,
       'diagnosis_id': _diaId.text,
       'feedback': _feedback.text
-        });
+    });
     var res = await http.post(url,
         headers: {'Content-Type': 'application/json'}, body: req_body);
 

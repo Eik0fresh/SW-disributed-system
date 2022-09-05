@@ -10,10 +10,10 @@ class _PatientInformationState extends State<PatientInformation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Personal Information"),
+        title: const Text("Personal Information"),
         centerTitle: true,
       ),
-      body: Center(
+      body: const Center(
         child: Text("Patient's personal information here"),
       ),
     );
