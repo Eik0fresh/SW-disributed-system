@@ -41,16 +41,16 @@ class _GetFeedbackState extends State<GetFeedback> {
           child: Padding(
             padding: const EdgeInsets.all(30.0),
             child: Column(children: <Widget>[
-              const Text(
-                  'Soll der Doctor seine eigenen Feedbacks einlesen können oder soll ein Betreuer sie auswerten?'),
+              // const Text(
+              //     'Soll der Doctor seine eigenen Feedbacks einlesen können oder soll ein Betreuer sie auswerten?'),
               TextField(
-                decoration: InputDecoration(hintText: "doctor_id"),
+                decoration: InputDecoration(hintText: "Get feedback from patient"),
                 controller: _dId,
               ),
               SizedBox(
                 height: 20,
               ),
-              Text("Get feedback from patient"),
+              // Text("Get feedback from patient"),
               ElevatedButton(
                 child: Text("Submit"),
                 onPressed: () {

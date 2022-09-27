@@ -28,8 +28,12 @@ class _RegistrationWindowState extends State<RegistrationWindow> {
   Future registration() async {
     //registration needs to be installed in backend
     var url = Uri.parse("http://ed-gateway:8080/patient/registration");
-    var reqBody = json.encode(
-        {'pID': patientIDRegistration, 'password': pwd, 'email': patientEmail});
+    var reqBody = json.encode({
+      'pID': patientIDRegistration,
+      'password': pwd.text,
+      'email': patientEmail.text
+    });
+
     var res = await http.post(url,
         headers: {
           "Content-Type": 'application/json',
@@ -124,7 +128,9 @@ class _RegistrationWindowState extends State<RegistrationWindow> {
                     ),
                   )),
               ElevatedButton(
-                  onPressed: registrationCheck(),
+                  onPressed: () {
+                    registrationCheck();
+                  },
                   child: const Text('Registrieren'))
             ]))));
   }

@@ -26,11 +26,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
           const SizedBox(
             height: 20,
           ),
-          //button("Login", DoctorLogin()),
-          //SizedBox(
-          //  height: 20,
-          //),
-          button("erstelle Guidance", GuidanceWindow()),
+          button("Create Guidance", GuidanceWindow()),
           const SizedBox(
             height: 20,
           ),
@@ -39,7 +35,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
           //SizedBox(
           //  height: 20,
           //),
-          //button("Feedback", GetFeedback())
+          button("Feedback", GetFeedback())
         ],
       )),
     );

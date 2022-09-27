@@ -14,7 +14,7 @@ class _PatientHelpState extends State<PatientHelp> {
         centerTitle: true,
       ),
       body: Center(
-        child: Text("Help for patient"),
+        child: Text("Genaral help Q&A for patient."),
       ),
     );
   }
