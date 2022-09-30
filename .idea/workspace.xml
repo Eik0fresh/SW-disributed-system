@@ -5,14 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="77cc766a-ae1e-4933-8bc0-433d845480fa" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/SW-disributed-system.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SW-disributed-system.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/diagnosis/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/diagnosis/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/diagnosis/src/main/java/swp/charite/diagnosis/DiagnosisApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/diagnosis/src/main/java/swp/charite/diagnosis/DiagnosisApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/diagnosis/src/main/java/swp/charite/diagnosis/controller/DiagnosisController.java" beforeDir="false" afterPath="$PROJECT_DIR$/diagnosis/src/main/java/swp/charite/diagnosis/controller/DiagnosisController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,6 +98,7 @@
       <workItem from="1657008695632" duration="7753000" />
       <workItem from="1657030589590" duration="342000" />
       <workItem from="1658243971322" duration="2566000" />
+      <workItem from="1664284648782" duration="655000" />
     </task>
     <servers />
   </component>

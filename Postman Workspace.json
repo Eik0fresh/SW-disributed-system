@@ -1,0 +1,398 @@
+{
+	"info": {
+		"_postman_id": "27fa5aa3-b63c-4d0b-ab1d-699f2ca21c8f",
+		"name": "SWP - Distributed Systems",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11662151"
+	},
+	"item": [
+		{
+			"name": "Get Patient Data of HAPI FHIR by First- and Lastname",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://ed-gateway:8080/patient/get/from/kis/John/Doe",
+					"protocol": "http",
+					"host": [
+						"ed-gateway"
+					],
+					"port": "8080",
+					"path": [
+						"patient",
+						"get",
+						"from",
+						"kis",
+						"John",
+						"Doe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Patient",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstname\": \"Eike\",\r\n    \"surname\": \"Taegener\",\r\n    \"email\": \"example@example.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ed-gateway:8080/patient/create",
+					"protocol": "http",
+					"host": [
+						"ed-gateway"
+					],
+					"port": "8080",
+					"path": [
+						"patient",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Patient data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://ed-gateway:8080/patient/query/0",
+					"protocol": "http",
+					"host": [
+						"ed-gateway"
+					],
+					"port": "8080",
+					"path": [
+						"patient",
+						"query",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Patient",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://ed-gateway:8080/patient/delete/0",
+					"protocol": "http",
+					"host": [
+						"ed-gateway"
+					],
+					"port": "8080",
+					"path": [
+						"patient",
+						"delete",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Gather all active Doctors of HAPI FHIR",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://ed-gateway:8080/doctor/load/all/from/kis",
+					"protocol": "http",
+					"host": [
+						"ed-gateway"
+					],
+					"port": "8080",
+					"path": [
+						"doctor",
+						"load",
+						"all",
+						"from",
+						"kis"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Doctor",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstname\": \"Eike\",\r\n    \"surname\": \"Taegener\",\r\n    \"email\": \"example@example.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ed-gateway:8080/doctor/create",
+					"protocol": "http",
+					"host": [
+						"ed-gateway"
+					],
+					"port": "8080",
+					"path": [
+						"doctor",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Doctor",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://ed-gateway:8080/doctor/delete/4",
+					"protocol": "http",
+					"host": [
+						"ed-gateway"
+					],
+					"port": "8080",
+					"path": [
+						"doctor",
+						"delete",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Center/Doctor Relation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"d_id\": 4,\r\n    \"c_id\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5502/work/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5502",
+					"path": [
+						"work",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Diagnosis",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"diagnosisId\": 0,\r\n    \"patientId\": 0,\r\n    \"doctorId\": 4\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ed-gateway:8080/diagnosis/create",
+					"protocol": "http",
+					"host": [
+						"ed-gateway"
+					],
+					"port": "8080",
+					"path": [
+						"diagnosis",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Guidance",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"dia_id\": 0,\r\n    \"guidance\": \"Go to the house doctor and get a gummi bear.\",\r\n    \"priority\": \"Normal\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ed-gateway:8080/diagnosis/guidance/create",
+					"protocol": "http",
+					"host": [
+						"ed-gateway"
+					],
+					"port": "8080",
+					"path": [
+						"diagnosis",
+						"guidance",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Feedback Nr. 1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"g_id\": 0,\r\n    \"feedback\": \"The threatment and guidance were perfect. I appreciated the gummi bear.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ed-gateway:8080/feedback/create",
+					"protocol": "http",
+					"host": [
+						"ed-gateway"
+					],
+					"port": "8080",
+					"path": [
+						"feedback",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Feedback Nr. 2",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"g_id\": 0,\r\n    \"feedback\": \"I feel so good. The guidance was perfect. Thanks.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ed-gateway:8080/feedback/create",
+					"protocol": "http",
+					"host": [
+						"ed-gateway"
+					],
+					"port": "8080",
+					"path": [
+						"feedback",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Feedback of Guidance",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://ed-gateway:8080/feedback/query/0",
+					"protocol": "http",
+					"host": [
+						"ed-gateway"
+					],
+					"port": "8080",
+					"path": [
+						"feedback",
+						"query",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Gather Diagnosis of HAPI FHIR",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://ed-gateway:8080/diagnosis/get/from/kis/1625155",
+					"protocol": "http",
+					"host": [
+						"ed-gateway"
+					],
+					"port": "8080",
+					"path": [
+						"diagnosis",
+						"get",
+						"from",
+						"kis",
+						"1625155"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
